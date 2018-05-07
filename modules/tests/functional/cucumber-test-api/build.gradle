@@ -1,0 +1,49 @@
+dependencies {
+	compileOnly group: 'cglib', name: 'cglib', version: '3.2.3'
+	compileOnly group: "info.cukes", name: "cucumber-core", version: "1.2.5"
+	compileOnly group: "info.cukes", name: "cucumber-java", version: "1.2.5"
+	compileOnly group: "info.cukes", name: "cucumber-junit", version: "1.2.5"
+	compileOnly group: "info.cukes", name: "cucumber-jvm-deps", version: "1.0.5"
+	compileOnly group: "info.cukes", name: "gherkin", version: "2.12.2"
+	compileOnly group: 'org.codehaus.jettison', name: 'jettison', version: '1.3.8'
+	compileOnly group: 'org.jdom', name: 'jdom2', version: '2.0.5'
+	compileOnly group: 'org.joda', name: 'joda-convert', version: '1.9.2'
+	compileOnly group: 'joda-time', name: 'joda-time', version: '2.3'
+	compileOnly group: 'stax', name: 'stax', version: '1.2.0'
+	compileOnly group: 'xom', name: 'xom', version: '1.2.5'
+	compileOnly group: 'xerces', name: 'xercesImpl', version: '2.6.2-jaxb-1.0.6'
+	compileOnly group: 'xmlpull', name: 'xmlpull', version: '1.1.3.4d_b4_min'
+
+	compileOnly project(":modules:tests:functional:selenium-test-api")
+
+	testCompile group: 'cglib', name: 'cglib', version: '3.2.3'
+	testCompile group: "info.cukes", name: "cucumber-core", version: "1.2.5"
+	testCompile group: "info.cukes", name: "cucumber-java", version: "1.2.5"
+	testCompile group: "info.cukes", name: "cucumber-junit", version: "1.2.5"
+	testCompile group: "info.cukes", name: "cucumber-jvm-deps", version: "1.0.5"
+	testCompile group: "info.cukes", name: "gherkin", version: "2.12.2"
+	testCompile group: 'org.codehaus.jettison', name: 'jettison', version: '1.3.8'
+	testCompile group: 'org.jdom', name: 'jdom2', version: '2.0.5'
+	testCompile group: 'org.joda', name: 'joda-convert', version: '1.9.2'
+	testCompile group: 'joda-time', name: 'joda-time', version: '2.3'
+	testCompile group: 'stax', name: 'stax', version: '1.2.0'
+	testCompile group: 'xom', name: 'xom', version: '1.2.5'
+	testCompile group: 'xerces', name: 'xercesImpl', version: '2.6.2-jaxb-1.0.6'
+	testCompile group: 'xmlpull', name: 'xmlpull', version: '1.1.3.4d_b4_min'
+
+	testCompile project(":modules:tests:functional:selenium-test-api")
+}
+
+task copyWebDrivers (type: Copy) {
+	Project seleniumAPI = project(":modules:tests:functional:selenium-test-api")
+
+	from seleniumAPI.file("src/main/resources/drivers")
+	into project.file("build/resources/main/drivers")
+	include '*'
+}
+
+task testFunctional(type: Test) {
+	include "**/runner/*Runner.class"
+}
+
+processResources.dependsOn(copyWebDrivers)
