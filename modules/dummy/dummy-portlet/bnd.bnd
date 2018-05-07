@@ -1,0 +1,4 @@
+Bundle-Name: dummy-portlet
+Bundle-SymbolicName: com.liferay.gs.test
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.gs.test.constants
