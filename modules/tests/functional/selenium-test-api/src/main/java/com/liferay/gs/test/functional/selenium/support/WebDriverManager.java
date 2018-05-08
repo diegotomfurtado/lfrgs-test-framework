@@ -2,6 +2,8 @@ package com.liferay.gs.test.functional.selenium.support;
 
 import com.liferay.gs.test.functional.selenium.constants.BrowserDrivers;
 import com.liferay.gs.test.functional.selenium.constants.Environment;
+import com.liferay.gs.test.functional.selenium.constants.SeleniumPropertyKeys;
+import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,8 +47,8 @@ public class WebDriverManager {
 			}
 		}
 		catch (Exception e) {
-			String systemPropertyDriverPath = System.getProperty(
-				BrowserDrivers.BROWSER_DRIVER_DIRECTORY_SYSTEM_PROPERTY);
+			String systemPropertyDriverPath = SeleniumProperties.get(
+				SeleniumPropertyKeys.BROWSER_DRIVER_DIR_PATH);
 
 			if (systemPropertyDriverPath != null) {
 				driverPath = systemPropertyDriverPath;

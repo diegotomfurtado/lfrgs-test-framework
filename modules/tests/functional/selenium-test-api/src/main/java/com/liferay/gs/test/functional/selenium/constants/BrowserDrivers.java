@@ -8,9 +8,6 @@ public class BrowserDrivers {
 	public static final String BROWSER_DRIVER_DIRECTORY =
 		"src/main/resources/drivers/";
 
-	public static final String BROWSER_DRIVER_DIRECTORY_SYSTEM_PROPERTY =
-		"selenium.drivers.dir";
-
 	public static final String BROWSER_CHROME = "chrome";
 
 	public static final String BROWSER_FIREFOX = "firefox";
