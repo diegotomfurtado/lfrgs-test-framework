@@ -1,7 +1,5 @@
 package com.liferay.gs.test.functional.selenium;
 
-import com.liferay.gs.test.functional.selenium.SeleniumJavaTestCase;
-
 import org.junit.Assert;
 
 /**

@@ -2,11 +2,11 @@ package com.liferay.gs.test.functional.selenium.runner;
 
 import com.liferay.gs.test.functional.selenium.rule.WebDriverTestRule;
 import com.liferay.gs.test.functional.selenium.support.WebDriverManager;
+import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverManagerThreadLocal;
+import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
 
 import java.util.List;
 
-import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverManagerThreadLocal;
-import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
 import org.junit.internal.runners.statements.InvokeMethod;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;

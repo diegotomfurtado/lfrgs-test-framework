@@ -1,12 +1,12 @@
 package com.liferay.gs.test.functional.selenium.runner;
 
 import com.liferay.gs.test.functional.selenium.support.WebDriverManager;
+import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverManagerThreadLocal;
+import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
-import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverManagerThreadLocal;
-import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
 import org.junit.runners.model.FrameworkField;
 import org.junit.runners.model.Statement;
 

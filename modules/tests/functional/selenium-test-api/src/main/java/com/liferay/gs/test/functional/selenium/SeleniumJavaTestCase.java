@@ -11,12 +11,6 @@ import org.openqa.selenium.WebDriver;
  */
 public class SeleniumJavaTestCase extends TestCase {
 
-	static {
-		WebDriverManager.init();
-
-		_WEB_DRIVER_MANAGER = new WebDriverManager();
-	}
-
 	@Override
 	protected void setUp() throws Exception {
 		webDriver = _WEB_DRIVER_MANAGER.getWebDriver();
@@ -31,7 +25,8 @@ public class SeleniumJavaTestCase extends TestCase {
 		webDriver = null;
 	}
 
-	private static WebDriverManager _WEB_DRIVER_MANAGER;
+	private static WebDriverManager _WEB_DRIVER_MANAGER =
+		new WebDriverManager();
 
 	protected WebDriver webDriver;
 

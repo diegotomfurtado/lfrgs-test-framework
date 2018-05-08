@@ -29,128 +29,6 @@ import org.openqa.selenium.remote.service.DriverService;
  */
 public class WebDriverManager {
 
-	synchronized public static void init() {
-		Environment.OSName osName = Environment.getOSName();
-		boolean is64Bit = Environment.is64Bit();
-
-		ClassLoader classLoader = WebDriverManager.class.getClassLoader();
-
-		String driverPath = BrowserDrivers.BROWSER_DRIVER_DIRECTORY;
-
-		try {
-			URL url = classLoader.getResource("drivers");
-
-			if (url != null) {
-				File driverFolder = new File(url.toURI());
-
-				driverPath = driverFolder.getPath();
-			}
-		}
-		catch (Exception e) {
-			String systemPropertyDriverPath = SeleniumProperties.get(
-				SeleniumPropertyKeys.BROWSER_DRIVER_DIR_PATH);
-
-			if (systemPropertyDriverPath != null) {
-				driverPath = systemPropertyDriverPath;
-			}
-		}
-
-		if (!driverPath.endsWith("/")) {
-			driverPath += "/";
-		}
-
-		_availableWebDrivers.clear();
-
-		_availableWebDrivers.add(BrowserDrivers.BROWSER_HTML_UNIT_TEST);
-
-		if (osName == Environment.OSName.LINUX) {
-			if (is64Bit) {
-				System.setProperty(
-					BrowserDrivers.SYSTEM_PROPERTY_CHROME_DRIVER,
-					driverPath +
-						BrowserDrivers.CHROME_DRIVER_LINUX64);
-				System.setProperty(
-					BrowserDrivers.SYSTEM_PROPERTY_FIREFOX_DRIVER,
-					driverPath +
-						BrowserDrivers.FIREFOX_DRIVER_LINUX32);
-
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
-			}
-			else {
-				System.setProperty(
-					BrowserDrivers.SYSTEM_PROPERTY_FIREFOX_DRIVER,
-					driverPath +
-						BrowserDrivers.FIREFOX_DRIVER_LINUX32);
-
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
-			}
-		}
-		else if (osName == Environment.OSName.MAC) {
-			if (is64Bit) {
-				System.setProperty(
-					BrowserDrivers.SYSTEM_PROPERTY_CHROME_DRIVER,
-					driverPath +
-						BrowserDrivers.CHROME_DRIVER_MAC64);
-				System.setProperty(
-					BrowserDrivers.SYSTEM_PROPERTY_FIREFOX_DRIVER,
-					driverPath +
-						BrowserDrivers.FIREFOX_DRIVER_MAC32);
-
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
-			}
-			else {
-				System.setProperty(
-					BrowserDrivers.SYSTEM_PROPERTY_FIREFOX_DRIVER,
-					driverPath +
-						BrowserDrivers.FIREFOX_DRIVER_MAC32);
-
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
-			}
-		}
-		else if (osName == Environment.OSName.WINDOWS) {
-			if (is64Bit) {
-				System.setProperty(
-					BrowserDrivers.SYSTEM_PROPERTY_CHROME_DRIVER,
-					driverPath +
-						BrowserDrivers.CHROME_DRIVER_WIN32);
-				System.setProperty(
-					BrowserDrivers.SYSTEM_PROPERTY_FIREFOX_DRIVER,
-					driverPath +
-						BrowserDrivers.FIREFOX_DRIVER_WIN32);
-				System.setProperty(
-					BrowserDrivers.INTERNET_EXPLORER_SYSTEM_PROPERTY,
-					driverPath +
-						BrowserDrivers.INTERNET_EXPLORER_WIN64);
-
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
-				_availableWebDrivers.add(
-					BrowserDrivers.BROWSER_INTERNET_EXPLORER);
-			}
-			else {
-				System.setProperty(
-					BrowserDrivers.SYSTEM_PROPERTY_CHROME_DRIVER,
-					driverPath +
-						BrowserDrivers.CHROME_DRIVER_WIN32);
-				System.setProperty(
-					BrowserDrivers.SYSTEM_PROPERTY_FIREFOX_DRIVER,
-					driverPath +
-						BrowserDrivers.FIREFOX_DRIVER_WIN32);
-				System.setProperty(
-					BrowserDrivers.INTERNET_EXPLORER_SYSTEM_PROPERTY,
-					driverPath +
-						BrowserDrivers.INTERNET_EXPLORER_WIN32);
-
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
-				_availableWebDrivers.add(
-					BrowserDrivers.BROWSER_INTERNET_EXPLORER);
-			}
-		}
-	}
-
 	public WebDriver getWebDriver() {
 		return getWebDriver(BrowserDrivers.BROWSER_HTML_UNIT_TEST, false);
 	}
@@ -266,7 +144,125 @@ public class WebDriverManager {
 		}
 	}
 
+	public static void init() {
+		Environment.OSName osName = Environment.getOSName();
+		boolean is64Bit = Environment.is64Bit();
+
+		ClassLoader classLoader = WebDriverManager.class.getClassLoader();
+
+		String driverPath = SeleniumProperties.get(
+			SeleniumPropertyKeys.BROWSER_DRIVER_DIR_PATH);
+
+		if ((driverPath == null) || driverPath.isEmpty()) {
+			try {
+				URL url = classLoader.getResource("drivers");
+
+				if (url != null) {
+					File driverFolder = new File(url.toURI());
+
+					driverPath = driverFolder.getPath();
+				}
+			}
+			catch (Exception e) {
+			}
+		}
+
+		if (driverPath == null) {
+			throw new UncheckedIOException(
+				new IOException("unable to load web drivers"));
+		}
+
+		if (!driverPath.endsWith("/")) {
+			driverPath += "/";
+		}
+
+		_availableWebDrivers.clear();
+
+		_availableWebDrivers.add(BrowserDrivers.BROWSER_HTML_UNIT_TEST);
+
+		if (osName == Environment.OSName.LINUX) {
+			if (is64Bit) {
+				System.setProperty(
+					SeleniumPropertyKeys.WEBDRIVER_CHROME_DRIVER,
+					driverPath + BrowserDrivers.CHROME_DRIVER_LINUX64);
+				System.setProperty(
+					SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
+					driverPath +
+						BrowserDrivers.FIREFOX_DRIVER_LINUX32);
+
+				_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
+				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+			}
+			else {
+				System.setProperty(
+					SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
+					driverPath + BrowserDrivers.FIREFOX_DRIVER_LINUX32);
+
+				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+			}
+		}
+		else if (osName == Environment.OSName.MAC) {
+			if (is64Bit) {
+				System.setProperty(
+					SeleniumPropertyKeys.WEBDRIVER_CHROME_DRIVER,
+					driverPath + BrowserDrivers.CHROME_DRIVER_MAC64);
+				System.setProperty(
+					SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
+					driverPath + BrowserDrivers.FIREFOX_DRIVER_MAC32);
+
+				_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
+				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+			}
+			else {
+				System.setProperty(
+					SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
+					driverPath +
+						BrowserDrivers.FIREFOX_DRIVER_MAC32);
+
+				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+			}
+		}
+		else if (osName == Environment.OSName.WINDOWS) {
+			if (is64Bit) {
+				System.setProperty(
+					SeleniumPropertyKeys.WEBDRIVER_CHROME_DRIVER,
+					driverPath + BrowserDrivers.CHROME_DRIVER_WIN32);
+				System.setProperty(
+					SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
+					driverPath + BrowserDrivers.FIREFOX_DRIVER_WIN32);
+				System.setProperty(
+					SeleniumPropertyKeys.WEBDRIVER_IE_DRIVER,
+					driverPath + BrowserDrivers.INTERNET_EXPLORER_WIN64);
+
+				_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
+				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+				_availableWebDrivers.add(
+					BrowserDrivers.BROWSER_INTERNET_EXPLORER);
+			}
+			else {
+				System.setProperty(
+					SeleniumPropertyKeys.WEBDRIVER_CHROME_DRIVER,
+					driverPath + BrowserDrivers.CHROME_DRIVER_WIN32);
+				System.setProperty(
+					SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
+					driverPath + BrowserDrivers.FIREFOX_DRIVER_WIN32);
+				System.setProperty(
+					SeleniumPropertyKeys.WEBDRIVER_IE_DRIVER,
+					driverPath + BrowserDrivers.INTERNET_EXPLORER_WIN32);
+
+				_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
+				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+				_availableWebDrivers.add(
+					BrowserDrivers.BROWSER_INTERNET_EXPLORER);
+			}
+		}
+	}
+
 	private static final List<String> _availableWebDrivers = new ArrayList<>();
+
+	static {
+		init();
+	}
 
 	private DriverService _activeService;
 	private WebDriver _webDriver;

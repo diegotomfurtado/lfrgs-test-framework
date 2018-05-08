@@ -51,8 +51,6 @@ public class LiferayCucumberRunner extends ParentRunner<Runner> {
 
 		super(klass);
 
-		WebDriverManager.init();
-
 		this.runners = Collections.unmodifiableList(runners);
 	}
 
