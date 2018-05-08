@@ -1,5 +1,7 @@
 package com.liferay.gs.test.functional.selenium.rule;
 
+import com.liferay.gs.test.functional.selenium.constants.SeleniumPropertyKeys;
+import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
 import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
 
 import java.awt.AWTException;
@@ -59,7 +61,10 @@ public class ScreenShotTestRule extends TestWatcher {
 			}
 		}
 
-		File screenShotParentDir = new File("");
+		String screenShotParentDirPath = SeleniumProperties.get(
+			SeleniumPropertyKeys.SCREEN_SHOT_DIR_PATH);
+
+		File screenShotParentDir = new File(screenShotParentDirPath);
 
 		try {
 			FileUtils.copyFile(
