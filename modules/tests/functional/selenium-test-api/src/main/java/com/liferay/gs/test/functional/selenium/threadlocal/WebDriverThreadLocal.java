@@ -1,4 +1,4 @@
-package com.liferay.gs.test.functional.selenium.runner;
+package com.liferay.gs.test.functional.selenium.threadlocal;
 
 import org.openqa.selenium.WebDriver;
 
