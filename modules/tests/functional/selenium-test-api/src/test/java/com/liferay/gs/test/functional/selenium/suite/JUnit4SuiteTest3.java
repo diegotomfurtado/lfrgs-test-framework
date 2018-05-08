@@ -1,7 +1,7 @@
 package com.liferay.gs.test.functional.selenium.suite;
 
 import com.liferay.gs.test.functional.selenium.BaseTest;
-import com.liferay.gs.test.functional.selenium.runner.WebDriverTestRule;
+import com.liferay.gs.test.functional.selenium.rule.WebDriverTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;

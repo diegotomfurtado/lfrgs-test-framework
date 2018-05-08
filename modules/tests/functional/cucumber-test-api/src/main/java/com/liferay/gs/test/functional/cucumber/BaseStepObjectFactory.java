@@ -1,6 +1,6 @@
 package com.liferay.gs.test.functional.cucumber;
 
-import com.liferay.gs.test.functional.selenium.runner.WebDriverThreadLocal;
+import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
 import cucumber.api.java.ObjectFactory;
 import cucumber.runtime.CucumberException;
 import org.openqa.selenium.WebDriver;
