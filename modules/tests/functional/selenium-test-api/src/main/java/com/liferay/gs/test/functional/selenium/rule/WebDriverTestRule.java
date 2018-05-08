@@ -1,8 +1,10 @@
-package com.liferay.gs.test.functional.selenium.runner;
+package com.liferay.gs.test.functional.selenium.rule;
 
 import com.liferay.gs.test.functional.selenium.constants.BrowserDrivers;
 import com.liferay.gs.test.functional.selenium.support.WebDriverManager;
 
+import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverManagerThreadLocal;
+import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
