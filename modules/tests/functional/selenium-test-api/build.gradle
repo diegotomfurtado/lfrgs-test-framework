@@ -75,7 +75,7 @@ dependencies {
 }
 
 test {
-	exclude("**/*example*")
+	exclude("**/*selenium*")
 }
 
 task testFunctional(type: Test) {
