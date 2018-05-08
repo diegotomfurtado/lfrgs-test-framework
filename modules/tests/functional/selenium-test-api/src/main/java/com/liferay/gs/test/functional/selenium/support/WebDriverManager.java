@@ -2,7 +2,7 @@ package com.liferay.gs.test.functional.selenium.support;
 
 import com.liferay.gs.test.functional.selenium.constants.BrowserDrivers;
 import com.liferay.gs.test.functional.selenium.constants.Environment;
-import com.liferay.gs.test.functional.selenium.constants.SeleniumPropertyKeys;
+import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
 import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
 
 import java.io.File;

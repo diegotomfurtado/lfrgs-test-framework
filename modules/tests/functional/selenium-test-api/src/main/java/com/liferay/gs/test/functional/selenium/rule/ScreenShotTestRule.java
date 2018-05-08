@@ -1,6 +1,6 @@
 package com.liferay.gs.test.functional.selenium.rule;
 
-import com.liferay.gs.test.functional.selenium.constants.SeleniumPropertyKeys;
+import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
 import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
 import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
 

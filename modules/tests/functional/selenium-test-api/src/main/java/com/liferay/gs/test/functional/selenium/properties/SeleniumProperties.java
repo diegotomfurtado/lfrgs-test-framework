@@ -1,7 +1,5 @@
 package com.liferay.gs.test.functional.selenium.properties;
 
-import com.liferay.gs.test.functional.selenium.constants.SeleniumPropertyKeys;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

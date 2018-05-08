@@ -1,4 +1,4 @@
-package com.liferay.gs.test.functional.selenium.constants;
+package com.liferay.gs.test.functional.selenium.properties;
 
 /**
  * @author Andrew Betts
