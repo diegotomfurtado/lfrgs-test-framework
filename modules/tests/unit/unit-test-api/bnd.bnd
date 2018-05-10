@@ -1,0 +1,4 @@
+Bundle-Name: unit-test-api
+Bundle-SymbolicName: com.liferay.gs.test.unit
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.gs.test.unit
