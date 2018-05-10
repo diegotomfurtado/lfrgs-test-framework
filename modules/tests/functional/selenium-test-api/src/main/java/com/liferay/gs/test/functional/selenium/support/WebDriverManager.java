@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -21,6 +22,8 @@ import org.openqa.selenium.firefox.GeckoDriverService;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.service.DriverService;
 
@@ -61,36 +64,50 @@ public class WebDriverManager {
 		Capabilities capabilities = null;
 
 		switch (browserType) {
-			case BrowserDrivers.BROWSER_CHROME:
+			case BrowserType.CHROME:
+			case BrowserType.GOOGLECHROME:
 				if (_chromeDriverService == null) {
 					_chromeDriverService =
 						ChromeDriverService.createDefaultService();
 				}
 
 				driverService = _chromeDriverService;
-				capabilities = new ChromeOptions();
+
+				capabilities = BrowserOptionsParser.getCapabilities(
+					SeleniumPropertyKeys.BROWSER_OPTIONS_CHROME_PREFIX,
+					new ChromeOptions());
 
 				break;
 
-			case BrowserDrivers.BROWSER_FIREFOX:
+			case BrowserType.FIREFOX:
+			case BrowserType.FIREFOX_PROXY:
 				if (_geckoDriverService == null) {
 					_geckoDriverService =
 						GeckoDriverService.createDefaultService();
 				}
 
 				driverService = _geckoDriverService;
-				capabilities = new FirefoxOptions();
+
+				capabilities = BrowserOptionsParser.getCapabilities(
+					SeleniumPropertyKeys.BROWSER_OPTIONS_GECKO_PREFIX,
+					new FirefoxOptions());
 
 				break;
 
-			case BrowserDrivers.BROWSER_INTERNET_EXPLORER:
+			case BrowserType.IE:
+			case BrowserType.IE_HTA:
+			case BrowserType.IEXPLORE:
+			case BrowserType.IEXPLORE_PROXY:
 				if (_ieDriverService == null) {
 					_ieDriverService =
 						InternetExplorerDriverService.createDefaultService();
 				}
 
 				driverService = _ieDriverService;
-				capabilities = new InternetExplorerOptions();
+
+				capabilities = BrowserOptionsParser.getCapabilities(
+					SeleniumPropertyKeys.BROWSER_OPTIONS_IE_PREFIX,
+					new InternetExplorerOptions());
 
 				break;
 
@@ -107,7 +124,12 @@ public class WebDriverManager {
 					_activeService = null;
 				}
 
-				return new HtmlUnitDriver();
+				Capabilities htmlUnitCapabilities =
+					BrowserOptionsParser.getCapabilities(
+						SeleniumPropertyKeys.BROWSER_OPTIONS_UNIT_HTML_PREFIX,
+						DesiredCapabilities.htmlUnit());
+
+				return new HtmlUnitDriver(htmlUnitCapabilities);
 		}
 
 		if (!driverService.equals(_activeService)) {
@@ -145,13 +167,12 @@ public class WebDriverManager {
 	}
 
 	private static void _init() {
-		Environment.OSName osName = Environment.getOSName();
 		boolean is64Bit = Environment.is64Bit();
 
 		ClassLoader classLoader = WebDriverManager.class.getClassLoader();
 
 		String driverPath = SeleniumProperties.get(
-			SeleniumPropertyKeys.BROWSER_DRIVER_DIR_PATH);
+			SeleniumPropertyKeys.SELENIUM_DRIVERS_DIR_PATH);
 
 		if ((driverPath == null) || driverPath.isEmpty()) {
 			try {
@@ -180,88 +201,91 @@ public class WebDriverManager {
 
 		_availableWebDrivers.add(BrowserDrivers.BROWSER_HTML_UNIT_TEST);
 
-		if (osName == Environment.OSName.LINUX) {
-			if (is64Bit) {
-				System.setProperty(
-					SeleniumPropertyKeys.WEBDRIVER_CHROME_DRIVER,
-					driverPath + BrowserDrivers.CHROME_DRIVER_LINUX64);
-				System.setProperty(
-					SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
-					driverPath +
-						BrowserDrivers.FIREFOX_DRIVER_LINUX32);
+		switch (Platform.getCurrent()) {
+			case LINUX:
+				if (is64Bit) {
+					System.setProperty(
+						SeleniumPropertyKeys.WEBDRIVER_CHROME_DRIVER,
+						driverPath + BrowserDrivers.CHROME_DRIVER_LINUX64);
+					System.setProperty(
+						SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
+						driverPath + BrowserDrivers.FIREFOX_DRIVER_LINUX32);
 
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
-			}
-			else {
-				System.setProperty(
-					SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
-					driverPath + BrowserDrivers.FIREFOX_DRIVER_LINUX32);
+					_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
+					_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+				}
+				else {
+					System.setProperty(
+						SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
+						driverPath + BrowserDrivers.FIREFOX_DRIVER_LINUX32);
 
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
-			}
-		}
-		else if (osName == Environment.OSName.MAC) {
-			if (is64Bit) {
-				System.setProperty(
-					SeleniumPropertyKeys.WEBDRIVER_CHROME_DRIVER,
-					driverPath + BrowserDrivers.CHROME_DRIVER_MAC64);
-				System.setProperty(
-					SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
-					driverPath + BrowserDrivers.FIREFOX_DRIVER_MAC32);
+					_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+				}
 
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
-			}
-			else {
-				System.setProperty(
-					SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
-					driverPath +
-						BrowserDrivers.FIREFOX_DRIVER_MAC32);
+				break;
 
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
-			}
-		}
-		else if (osName == Environment.OSName.WINDOWS) {
-			if (is64Bit) {
-				System.setProperty(
-					SeleniumPropertyKeys.WEBDRIVER_CHROME_DRIVER,
-					driverPath + BrowserDrivers.CHROME_DRIVER_WIN32);
-				System.setProperty(
-					SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
-					driverPath + BrowserDrivers.FIREFOX_DRIVER_WIN32);
-				System.setProperty(
-					SeleniumPropertyKeys.WEBDRIVER_IE_DRIVER,
-					driverPath + BrowserDrivers.INTERNET_EXPLORER_WIN64);
+			case MAC:
+				if (is64Bit) {
+					System.setProperty(
+						SeleniumPropertyKeys.WEBDRIVER_CHROME_DRIVER,
+						driverPath + BrowserDrivers.CHROME_DRIVER_MAC64);
+					System.setProperty(
+						SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
+						driverPath + BrowserDrivers.FIREFOX_DRIVER_MAC32);
 
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
-				_availableWebDrivers.add(
-					BrowserDrivers.BROWSER_INTERNET_EXPLORER);
-			}
-			else {
-				System.setProperty(
-					SeleniumPropertyKeys.WEBDRIVER_CHROME_DRIVER,
-					driverPath + BrowserDrivers.CHROME_DRIVER_WIN32);
-				System.setProperty(
-					SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
-					driverPath + BrowserDrivers.FIREFOX_DRIVER_WIN32);
-				System.setProperty(
-					SeleniumPropertyKeys.WEBDRIVER_IE_DRIVER,
-					driverPath + BrowserDrivers.INTERNET_EXPLORER_WIN32);
+					_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
+					_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+				}
+				else {
+					System.setProperty(
+						SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
+						driverPath + BrowserDrivers.FIREFOX_DRIVER_MAC32);
 
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
-				_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
-				_availableWebDrivers.add(
-					BrowserDrivers.BROWSER_INTERNET_EXPLORER);
-			}
+					_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+				}
+
+				break;
+
+			case WINDOWS:
+				if (is64Bit) {
+					System.setProperty(
+						SeleniumPropertyKeys.WEBDRIVER_CHROME_DRIVER,
+						driverPath + BrowserDrivers.CHROME_DRIVER_WIN32);
+					System.setProperty(
+						SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
+						driverPath + BrowserDrivers.FIREFOX_DRIVER_WIN32);
+					System.setProperty(
+						SeleniumPropertyKeys.WEBDRIVER_IE_DRIVER,
+						driverPath + BrowserDrivers.INTERNET_EXPLORER_WIN64);
+
+					_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
+					_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+					_availableWebDrivers.add(
+						BrowserDrivers.BROWSER_INTERNET_EXPLORER);
+				}
+				else {
+					System.setProperty(
+						SeleniumPropertyKeys.WEBDRIVER_CHROME_DRIVER,
+						driverPath + BrowserDrivers.CHROME_DRIVER_WIN32);
+					System.setProperty(
+						SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
+						driverPath + BrowserDrivers.FIREFOX_DRIVER_WIN32);
+					System.setProperty(
+						SeleniumPropertyKeys.WEBDRIVER_IE_DRIVER,
+						driverPath + BrowserDrivers.INTERNET_EXPLORER_WIN32);
+
+					_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
+					_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+					_availableWebDrivers.add(
+						BrowserDrivers.BROWSER_INTERNET_EXPLORER);
+				}
 		}
 	}
 
 	private static final List<String> _availableWebDrivers = new ArrayList<>();
 
 	static {
-		init();
+		_init();
 	}
 
 	private DriverService _activeService;
