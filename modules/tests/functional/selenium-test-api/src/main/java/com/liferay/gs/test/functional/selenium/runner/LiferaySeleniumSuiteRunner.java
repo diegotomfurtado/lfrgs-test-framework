@@ -11,10 +11,6 @@ import org.junit.runners.model.RunnerBuilder;
  */
 public class LiferaySeleniumSuiteRunner extends Suite {
 
-	static {
-		WebDriverManager.init();
-	}
-
 	public LiferaySeleniumSuiteRunner(Class<?> klass, RunnerBuilder builder)
 		throws InitializationError {
 

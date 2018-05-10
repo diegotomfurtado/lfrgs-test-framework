@@ -144,7 +144,7 @@ public class WebDriverManager {
 		}
 	}
 
-	public static void init() {
+	private static void _init() {
 		Environment.OSName osName = Environment.getOSName();
 		boolean is64Bit = Environment.is64Bit();
 

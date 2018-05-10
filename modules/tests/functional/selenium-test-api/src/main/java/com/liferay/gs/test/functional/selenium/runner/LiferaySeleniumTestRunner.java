@@ -30,8 +30,6 @@ public class LiferaySeleniumTestRunner extends BlockJUnit4ClassRunner {
 
 		super(klass);
 
-		WebDriverManager.init();
-
 		_webDriverManager = new WebDriverManager();
 
 		_testClass = getTestClass();
