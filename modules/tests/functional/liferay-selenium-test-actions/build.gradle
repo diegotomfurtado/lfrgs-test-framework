@@ -1,0 +1,4 @@
+dependencies {
+	compileOnly project(":modules:tests:functional:selenium-test-api")
+	testCompile project(":modules:tests:functional:selenium-test-api")
+}

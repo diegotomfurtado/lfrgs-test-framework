@@ -56,4 +56,7 @@ public class SeleniumPropertyKeys {
 
 	public static final String WEBDRIVER_IE_DRIVER = "webdriver.ie.driver";
 
+	public static final String WEBDRIVER_DEFAULT_TIMEOUT =
+		"webdriver.default.timeout";
+
 }
