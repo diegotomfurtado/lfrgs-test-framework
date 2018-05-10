@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -36,11 +39,27 @@ public class SeleniumProperties {
 		// override defaults
 
 		String propertiesPath = _PROPERTIES.getProperty(
-			SeleniumPropertyKeys.SELENIUM_PROPERTIES_PATH);
+			SeleniumPropertyKeys.SELENIUM_PROPERTIES_FILE_PATH);
 
 		if ((propertiesPath != null) && !propertiesPath.isEmpty()) {
 			_PROPERTIES.load(new FileInputStream(new File(propertiesPath)));
 		}
+	}
+
+	public static Map<String, String> getByPrefix(String prefix) {
+		Map<String, String> properties = new HashMap<>();
+
+		for (String key : _PROPERTIES.stringPropertyNames()) {
+			if (!key.startsWith(prefix)) {
+				continue;
+			}
+
+			properties.put(
+				key.substring(prefix.length()),
+				_PROPERTIES.getProperty(key));
+		}
+
+		return properties;
 	}
 
 	public static String get(String key) {
