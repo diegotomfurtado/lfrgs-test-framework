@@ -33,7 +33,7 @@ import org.openqa.selenium.remote.service.DriverService;
 public class WebDriverManager {
 
 	public WebDriver getWebDriver() {
-		return getWebDriver(BrowserDrivers.BROWSER_HTML_UNIT_TEST, false);
+		return getWebDriver(BrowserType.HTMLUNIT, false);
 	}
 
 	public WebDriver getWebDriver(String browserType) {
@@ -199,7 +199,7 @@ public class WebDriverManager {
 
 		_availableWebDrivers.clear();
 
-		_availableWebDrivers.add(BrowserDrivers.BROWSER_HTML_UNIT_TEST);
+		_availableWebDrivers.add(BrowserType.HTMLUNIT);
 
 		switch (Platform.getCurrent()) {
 			case LINUX:
@@ -212,14 +212,14 @@ public class WebDriverManager {
 						driverPath + BrowserDrivers.FIREFOX_DRIVER_LINUX32);
 
 					_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
-					_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+					_availableWebDrivers.add(BrowserType.FIREFOX);
 				}
 				else {
 					System.setProperty(
 						SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
 						driverPath + BrowserDrivers.FIREFOX_DRIVER_LINUX32);
 
-					_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+					_availableWebDrivers.add(BrowserType.FIREFOX);
 				}
 
 				break;
@@ -234,14 +234,14 @@ public class WebDriverManager {
 						driverPath + BrowserDrivers.FIREFOX_DRIVER_MAC32);
 
 					_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
-					_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+					_availableWebDrivers.add(BrowserType.FIREFOX);
 				}
 				else {
 					System.setProperty(
 						SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
 						driverPath + BrowserDrivers.FIREFOX_DRIVER_MAC32);
 
-					_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+					_availableWebDrivers.add(BrowserType.FIREFOX);
 				}
 
 				break;
@@ -258,10 +258,10 @@ public class WebDriverManager {
 						SeleniumPropertyKeys.WEBDRIVER_IE_DRIVER,
 						driverPath + BrowserDrivers.INTERNET_EXPLORER_WIN64);
 
-					_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
-					_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+					_availableWebDrivers.add(BrowserType.CHROME);
+					_availableWebDrivers.add(BrowserType.FIREFOX);
 					_availableWebDrivers.add(
-						BrowserDrivers.BROWSER_INTERNET_EXPLORER);
+						BrowserType.IE);
 				}
 				else {
 					System.setProperty(
@@ -274,10 +274,10 @@ public class WebDriverManager {
 						SeleniumPropertyKeys.WEBDRIVER_IE_DRIVER,
 						driverPath + BrowserDrivers.INTERNET_EXPLORER_WIN32);
 
-					_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
-					_availableWebDrivers.add(BrowserDrivers.BROWSER_FIREFOX);
+					_availableWebDrivers.add(BrowserType.CHROME);
+					_availableWebDrivers.add(BrowserType.FIREFOX);
 					_availableWebDrivers.add(
-						BrowserDrivers.BROWSER_INTERNET_EXPLORER);
+						BrowserType.IE);
 				}
 		}
 	}

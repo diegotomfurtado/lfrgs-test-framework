@@ -2,6 +2,7 @@ package com.liferay.gs.test.functional.selenium.properties;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -43,6 +44,18 @@ public class SeleniumProperties {
 
 		if ((propertiesPath != null) && !propertiesPath.isEmpty()) {
 			_PROPERTIES.load(new FileInputStream(new File(propertiesPath)));
+		}
+	}
+
+	public static void loadProperties(File propertiesFile)
+		throws IOException {
+
+		_PROPERTIES.clear();
+
+		init();
+
+		if (propertiesFile != null) {
+			_PROPERTIES.load(new FileInputStream(propertiesFile));
 		}
 	}
 

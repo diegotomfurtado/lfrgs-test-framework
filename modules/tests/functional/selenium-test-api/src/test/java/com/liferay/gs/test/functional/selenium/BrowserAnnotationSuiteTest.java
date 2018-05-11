@@ -1,6 +1,5 @@
 package com.liferay.gs.test.functional.selenium;
 
-import com.liferay.gs.test.functional.selenium.constants.BrowserDrivers;
 import com.liferay.gs.test.functional.selenium.suite.SeleniumSuiteTest1;
 import com.liferay.gs.test.functional.selenium.runner.Browsers;
 import com.liferay.gs.test.functional.selenium.runner.LiferaySeleniumSuiteRunner;
@@ -11,18 +10,19 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.BrowserType;
 
 /**
  * @author Andrew Betts
  */
+@Browsers({
+	BrowserType.HTMLUNIT,
+	BrowserType.CHROME,
+	BrowserType.FIREFOX,
+	BrowserType.IE
+})
 @RunWith(LiferaySeleniumSuiteRunner.class)
 @Suite.SuiteClasses(SeleniumSuiteTest1.class)
-@Browsers({
-	BrowserDrivers.BROWSER_HTML_UNIT_TEST,
-	BrowserDrivers.BROWSER_CHROME,
-	BrowserDrivers.BROWSER_FIREFOX,
-	BrowserDrivers.BROWSER_INTERNET_EXPLORER
-})
 public class BrowserAnnotationSuiteTest extends BaseTest {
 
 	@Test

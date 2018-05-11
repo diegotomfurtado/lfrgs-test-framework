@@ -1,6 +1,5 @@
 package com.liferay.gs.test.functional.selenium.rule;
 
-import com.liferay.gs.test.functional.selenium.constants.BrowserDrivers;
 import com.liferay.gs.test.functional.selenium.support.WebDriverManager;
 import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverManagerThreadLocal;
 import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
@@ -10,6 +9,7 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.BrowserType;
 
 /**
  * @author Andrew Betts
@@ -17,7 +17,7 @@ import org.openqa.selenium.WebDriver;
 public class WebDriverTestRule implements TestRule {
 
 	public WebDriverTestRule() {
-		this(new String[] {BrowserDrivers.BROWSER_HTML_UNIT_TEST}, false);
+		this(new String[] {BrowserType.HTMLUNIT}, false);
 	}
 
 	public WebDriverTestRule(String[] browsers) {

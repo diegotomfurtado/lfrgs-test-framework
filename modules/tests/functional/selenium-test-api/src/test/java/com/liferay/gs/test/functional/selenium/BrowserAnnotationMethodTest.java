@@ -1,6 +1,5 @@
 package com.liferay.gs.test.functional.selenium;
 
-import com.liferay.gs.test.functional.selenium.constants.BrowserDrivers;
 import com.liferay.gs.test.functional.selenium.runner.Browsers;
 import com.liferay.gs.test.functional.selenium.runner.LiferaySeleniumTestRunner;
 import com.liferay.gs.test.functional.selenium.runner.WebDriverField;
@@ -9,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.BrowserType;
 
 /**
  * @author Andrew Betts
@@ -18,10 +18,10 @@ public class BrowserAnnotationMethodTest extends BaseTest {
 
 	@Test
 	@Browsers({
-		BrowserDrivers.BROWSER_HTML_UNIT_TEST,
-		BrowserDrivers.BROWSER_CHROME,
-		BrowserDrivers.BROWSER_FIREFOX,
-		BrowserDrivers.BROWSER_INTERNET_EXPLORER
+		BrowserType.HTMLUNIT,
+		BrowserType.CHROME,
+		BrowserType.FIREFOX,
+		BrowserType.IE
 	})
 	public void testBrowsers() throws Exception {
 		testGoogle(webDriver);

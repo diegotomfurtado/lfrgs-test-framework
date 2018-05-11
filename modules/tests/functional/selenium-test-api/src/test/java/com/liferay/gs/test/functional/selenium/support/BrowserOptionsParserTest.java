@@ -1,12 +1,15 @@
 package com.liferay.gs.test.functional.selenium.support;
 
+import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
 import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,22 +35,25 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 @RunWith(JUnit4.class)
 public class BrowserOptionsParserTest {
 
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		SeleniumProperties.loadProperties(null);
+	}
+
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		ClassLoader classLoader = BrowserOptionsParser.class.getClassLoader();
 
-		URL url = classLoader.getResource("selenium.properties");
+		URL url = classLoader.getResource("test.selenium.properties");
 
 		if (url == null) {
 			throw new IllegalStateException(
-				"unable to locate selenium.properties file");
+				"unable to locate test.selenium.properties file");
 		}
 
 		File file = new File(url.toURI());
 
-		System.setProperty(
-			SeleniumPropertyKeys.SELENIUM_PROPERTIES_FILE_PATH,
-			file.getPath());
+		SeleniumProperties.loadProperties(file);
 	}
 
 	@Test

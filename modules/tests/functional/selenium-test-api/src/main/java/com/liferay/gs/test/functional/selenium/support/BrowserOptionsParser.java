@@ -277,6 +277,9 @@ public class BrowserOptionsParser {
 		Map<String, String> properties =
 			SeleniumProperties.getByPrefix(propertyPrefix);
 
+		// default to false
+		desiredCapabilities.setJavascriptEnabled(false);
+
 		_setBooleanOption(
 			CapabilityType.ACCEPT_INSECURE_CERTS, properties,
 			desiredCapabilities::setAcceptInsecureCerts);
@@ -285,8 +288,8 @@ public class BrowserOptionsParser {
 			desiredCapabilities::setJavascriptEnabled);
 
 		_setEnumOption(
-			CapabilityType.PLATFORM_NAME, properties, desiredCapabilities::setPlatform,
-			Platform::valueOf);
+			CapabilityType.PLATFORM_NAME, properties,
+			desiredCapabilities::setPlatform, Platform::valueOf);
 
 		_setStringOption(
 			CapabilityType.BROWSER_NAME, properties,
