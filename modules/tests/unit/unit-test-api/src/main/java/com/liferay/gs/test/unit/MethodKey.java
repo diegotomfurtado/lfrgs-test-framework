@@ -6,8 +6,9 @@ import java.util.Objects;
 /**
  * @author Andrew Betts
  */
-public class TestMethodKey {
-	public TestMethodKey(
+public class MethodKey {
+
+	public MethodKey(
 		String className, String methodName, Class<?>[] parameterTypes) {
 
 		if ((className == null) || (methodName == null) ||
@@ -28,15 +29,15 @@ public class TestMethodKey {
 			return true;
 		}
 
-		if (!(object instanceof TestMethodKey)) {
+		if (!(object instanceof MethodKey)) {
 			return false;
 		}
 
-		TestMethodKey testMethodKey = (TestMethodKey)object;
+		MethodKey methodKey = (MethodKey)object;
 
-		if (!Objects.equals(_className, testMethodKey._className) ||
-			!Objects.equals(_methodName, testMethodKey._methodName) ||
-			!Arrays.equals(_parameterTypes, testMethodKey._parameterTypes)) {
+		if (!Objects.equals(_className, methodKey._className) ||
+			!Objects.equals(_methodName, methodKey._methodName) ||
+			!Arrays.equals(_parameterTypes, methodKey._parameterTypes)) {
 
 			return false;
 		}
@@ -46,7 +47,7 @@ public class TestMethodKey {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_className, _methodName, _parameterTypes);
+		return Objects.hash(_className, _methodName, _parameterTypes.length);
 	}
 
 	@Override

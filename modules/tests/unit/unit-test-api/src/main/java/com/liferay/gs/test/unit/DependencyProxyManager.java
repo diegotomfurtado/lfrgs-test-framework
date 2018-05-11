@@ -10,22 +10,24 @@ import java.util.Map;
 /**
  * @author Andrew Betts
  */
-public class TestDependencyProxyManager<T> {
+public class DependencyProxyManager {
 
 	public List<MethodInvocation> getMethodInvocations(
-		String invocationClassName) {
+		Class<?> interfaceClass) {
 
-		return callMap.get(invocationClassName);
+		return callMap.get(interfaceClass.getName());
 	}
 
-	public void puReturnValue(TestMethodKey testMethodKey, Object object) {
+	public void putReturnValue(MethodKey testMethodKey, Object object) {
 		returnValues.put(testMethodKey, object);
 	}
 
-	public void setProxies(T testDependency) throws Exception {
+	public void reset() {
 		returnValues.clear();
 		callMap.clear();
+	}
 
+	public <D> List<Field> setProxies(D testDependency) throws Exception {
 		List<Field> fields = new ArrayList<>();
 
 		Class<?> concreteClass = testDependency.getClass();
@@ -33,7 +35,7 @@ public class TestDependencyProxyManager<T> {
 		Class<?> currentClass = concreteClass;
 
 		while (currentClass.getSuperclass() != null) {
-			if (currentClass != TestDependencyProxyManager.class) {
+			if (currentClass != DependencyProxyManager.class) {
 				for (Field declaredField : currentClass.getDeclaredFields()) {
 					fields.add(declaredField);
 				}
@@ -44,10 +46,12 @@ public class TestDependencyProxyManager<T> {
 
 		ClassLoader classLoader = concreteClass.getClassLoader();
 
-		for (Field field : fields) {
-			Class<?> declaringClass = field.getType();
+		List<Field> unProxiableFields = new ArrayList<>();
 
-			if (declaringClass.equals(Map.class) &&
+		for (Field field : fields) {
+			Class<?> fieldType = field.getType();
+
+			if (fieldType.equals(Map.class) &&
 				(RETURN_VALUES_FIELD_NAME.equals(field.getName()) ||
 					CALL_MAP_FIELD_NAME.equals(field.getName()))) {
 
@@ -56,37 +60,45 @@ public class TestDependencyProxyManager<T> {
 
 			field.setAccessible(true);
 
+			if (!fieldType.isInterface()) {
+				unProxiableFields.add(field);
+
+				continue;
+			}
+
 			field.set(
 				testDependency,
 				Proxy.newProxyInstance(
 					classLoader,
-					new Class<?>[] { declaringClass },
+					new Class<?>[] { fieldType },
 					new MapBackedInvocationHandler(
-						declaringClass.getName(), returnValues)
+						fieldType.getName(), returnValues)
 				));
 		}
+
+		return unProxiableFields;
 	}
 
 	@SuppressWarnings("unchecked")
-	public <I> I getCallCollectingProxyInstance(Class<I> invocationClass) {
+	public <I> I getCallCollectingProxyInstance(Class<I> interfaceClass) {
+		if (!interfaceClass.isInterface()) {
+			throw new IllegalArgumentException(
+				"did you mean to make a test class instead? " +
+					"only able to create proxies on interfaces");
+		}
+
 		return (I)Proxy.newProxyInstance(
-			invocationClass.getClassLoader(),
-			new Class[] {invocationClass},
+			interfaceClass.getClassLoader(),
+			new Class[] {interfaceClass},
 			((proxy, method, args) -> {
-				List<MethodInvocation> calls = callMap.get(
-					invocationClass.getName());
-
-				if (calls == null) {
-					calls = new ArrayList<>();
-
-					callMap.put(invocationClass.getName(), calls);
-				}
+				List<MethodInvocation> calls = callMap.computeIfAbsent(
+					interfaceClass.getName(), key -> new ArrayList<>());
 
 				calls.add(new MethodInvocation(method.getName(), args));
 
 				return returnValues.get(
-					new TestMethodKey(
-						invocationClass.getName(), method.getName(),
+					new MethodKey(
+						interfaceClass.getName(), method.getName(),
 						method.getParameterTypes()));
 			}));
 	}
@@ -95,7 +107,7 @@ public class TestDependencyProxyManager<T> {
 
 	private static final String CALL_MAP_FIELD_NAME = "callMap";
 
-	private Map<TestMethodKey, Object> returnValues = new HashMap<>();
+	private Map<MethodKey, Object> returnValues = new HashMap<>();
 	private Map<String, List<MethodInvocation>> callMap = new HashMap<>();
 
 }

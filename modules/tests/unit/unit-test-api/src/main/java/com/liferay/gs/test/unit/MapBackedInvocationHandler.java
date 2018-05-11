@@ -10,7 +10,7 @@ import java.util.Map;
 public class MapBackedInvocationHandler implements InvocationHandler {
 
 	public MapBackedInvocationHandler(
-		String className, Map<TestMethodKey, Object> returnValues) {
+		String className, Map<MethodKey, Object> returnValues) {
 		_className = className;
 		_returnValues = returnValues;
 	}
@@ -19,13 +19,13 @@ public class MapBackedInvocationHandler implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args)
 		throws Throwable {
 
-		TestMethodKey testMethodKey = new TestMethodKey(
+		MethodKey testMethodKey = new MethodKey(
 			_className, method.getName(), method.getParameterTypes());
 
 		return _returnValues.get(testMethodKey);
 	}
 
 	private String _className;
-	private Map<TestMethodKey, Object> _returnValues;
+	private Map<MethodKey, Object> _returnValues;
 
 }
