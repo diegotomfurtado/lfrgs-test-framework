@@ -1,5 +1,5 @@
-Bundle-Name: cucumber-test-api
-Bundle-SymbolicName: com.liferay.functional.test.cucumber
+Bundle-Name: Liferay Cucumber Test API
+Bundle-SymbolicName: cucumber-test-api
 Bundle-Version: 1.0.0
 Export-Package: com.liferay.functional.test.cucumber
 -exportcontents:\

@@ -1,5 +1,5 @@
-Bundle-Name: dummy-service-builder-service
-Bundle-SymbolicName: com.liferay.gs.test.service
+Bundle-Name: Dummy Service Builder Impl
+Bundle-SymbolicName: dummy-service-builder-service
 Bundle-Version: 1.0.0
 Liferay-Require-SchemaVersion: 1.0.0
 Liferay-Service: true

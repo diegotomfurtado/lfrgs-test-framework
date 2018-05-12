@@ -1,3 +1,4 @@
-Bundle-Name: unit-test-api
-Bundle-SymbolicName: com.liferay.gs.test.unit
+Bundle-Name: Liferay Proxy Unit Test API
+Bundle-SymbolicName: proxy-test-api
 Bundle-Version: 1.0.0
+Export-Package: com.liferay.gs.test.unit.proxy

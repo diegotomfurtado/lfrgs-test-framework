@@ -1,5 +1,5 @@
-Bundle-Name: selenium-test-api
-Bundle-SymbolicName: com.liferay.functional.test.selenium
+Bundle-Name: Liferay Selenium Test API
+Bundle-SymbolicName: selenium-test-api
 Bundle-Version: 1.0.0
 Export-Package:\
     com.liferay.functional.test.selenium,\
