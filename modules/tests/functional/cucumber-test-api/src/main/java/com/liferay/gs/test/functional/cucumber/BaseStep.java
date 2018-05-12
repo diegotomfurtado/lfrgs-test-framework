@@ -1,11 +1,15 @@
 package com.liferay.gs.test.functional.cucumber;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
+import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
+import com.liferay.gs.test.functional.selenium.support.WebDriverManager;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.BrowserType;
 
 /**
  * @author Andrew Betts
@@ -32,7 +36,7 @@ public abstract class BaseStep {
 
 	protected <T> T getComponent(Class<T> klass) {
 		if (_webDriver == null) {
-			updateWebDriver(new HtmlUnitDriver());
+			getWebDriver();
 		}
 
 		WebDriverComponent baseComponent =
@@ -47,13 +51,21 @@ public abstract class BaseStep {
 
 	protected WebDriver getWebDriver() {
 		if (_webDriver == null) {
-			updateWebDriver(new HtmlUnitDriver());
+			String defaultBrowser = SeleniumProperties.get(
+				SeleniumPropertyKeys.TEST_DEFAULT_BROWSER);
+
+			if (defaultBrowser == null) {
+				defaultBrowser = BrowserType.HTMLUNIT;
+			}
+
+			updateWebDriver(_webDriverManager.getWebDriver(defaultBrowser));
 		}
 
 		return _webDriver;
 	}
 
 	private WebDriver _webDriver;
+	private WebDriverManager _webDriverManager = new WebDriverManager();
 
 	private Map<String, ? super WebDriverComponent> componentRegistry =
 		new HashMap<>();

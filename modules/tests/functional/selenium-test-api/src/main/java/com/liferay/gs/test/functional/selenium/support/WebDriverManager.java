@@ -32,8 +32,20 @@ import org.openqa.selenium.remote.service.DriverService;
  */
 public class WebDriverManager {
 
+	@Override
+	public void finalize() {
+		stopService();
+	}
+
 	public WebDriver getWebDriver() {
-		return getWebDriver(BrowserType.HTMLUNIT, false);
+		String defaultBrowser = SeleniumProperties.get(
+			SeleniumPropertyKeys.TEST_DEFAULT_BROWSER);
+
+		if (defaultBrowser == null) {
+			defaultBrowser = BrowserType.HTMLUNIT;
+		}
+
+		return getWebDriver(defaultBrowser, false);
 	}
 
 	public WebDriver getWebDriver(String browserType) {

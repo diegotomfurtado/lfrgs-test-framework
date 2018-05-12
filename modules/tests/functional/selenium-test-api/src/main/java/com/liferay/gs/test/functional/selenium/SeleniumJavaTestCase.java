@@ -1,5 +1,7 @@
 package com.liferay.gs.test.functional.selenium;
 
+import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
+import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
 import com.liferay.gs.test.functional.selenium.support.WebDriverManager;
 
 import junit.framework.TestCase;
@@ -13,7 +15,14 @@ import org.openqa.selenium.remote.BrowserType;
 public abstract class SeleniumJavaTestCase extends TestCase {
 
 	protected String getBrowser() {
-		return BrowserType.HTMLUNIT;
+		String defaultBrowser = SeleniumProperties.get(
+			SeleniumPropertyKeys.TEST_DEFAULT_BROWSER);
+
+		if (defaultBrowser == null) {
+			defaultBrowser = BrowserType.HTMLUNIT;
+		}
+
+		return defaultBrowser;
 	}
 
 	@Override
