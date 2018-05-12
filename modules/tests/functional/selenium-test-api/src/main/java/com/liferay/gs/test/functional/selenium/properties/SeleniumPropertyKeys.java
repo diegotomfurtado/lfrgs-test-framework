@@ -52,6 +52,8 @@ public class SeleniumPropertyKeys {
 
 	public static final String TEST_BASE_URL = "test.base.url";
 
+	public static final String TEST_DEFAULT_BROWSER = "test.default.browser";
+
 	public static final String TEST_DEFAULT_USER_LOGIN =
 		"test.default.user.login";
 
