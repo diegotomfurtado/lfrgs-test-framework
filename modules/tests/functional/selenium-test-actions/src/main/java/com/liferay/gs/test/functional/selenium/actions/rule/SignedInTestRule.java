@@ -4,39 +4,43 @@ import com.liferay.gs.test.functional.selenium.actions.LiferayUserActions;
 import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
 import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
 import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
-import org.junit.rules.TestRule;
+
+import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
 import org.openqa.selenium.WebDriver;
 
 /**
  * @author Andrew Betts
  */
-public class SignedInTestRule implements TestRule {
+public class SignedInTestRule extends TestWatcher {
 
-	@Override
-	public Statement apply(Statement base, Description description) {
-		LiferayUserActions liferayUserActions = new LiferayUserActions();
-
-		return new Statement() {
-
-			@Override
-			public void evaluate() throws Throwable {
-				WebDriver webDriver = WebDriverThreadLocal.get();
-
-				String login = SeleniumProperties.get(
-					SeleniumPropertyKeys.TEST_DEFAULT_USER_LOGIN);
-				String password = SeleniumProperties.get(
-					SeleniumPropertyKeys.TEST_DEFAULT_USER_PASSWWORD);
-
-				liferayUserActions.signIn(login, password, webDriver);
-
-				base.evaluate();
-
-				liferayUserActions.signOut(webDriver);
-			}
-
-		};
+	public SignedInTestRule() {
+		_liferayUserActions = new LiferayUserActions();
 	}
+
+	/**
+	 * Invoked when a test is about to start
+	 */
+	protected void starting(Description description) {
+		WebDriver webDriver = WebDriverThreadLocal.get();
+
+		String login = SeleniumProperties.get(
+			SeleniumPropertyKeys.TEST_DEFAULT_USER_LOGIN);
+		String password = SeleniumProperties.get(
+			SeleniumPropertyKeys.TEST_DEFAULT_USER_PASSWWORD);
+
+		_liferayUserActions.signIn(login, password, webDriver);
+	}
+
+	/**
+	 * Invoked when a test method finishes (whether passing or failing)
+	 */
+	protected void finished(Description description) {
+		WebDriver webDriver = WebDriverThreadLocal.get();
+
+		_liferayUserActions.signOut(webDriver);
+	}
+
+	private LiferayUserActions _liferayUserActions;
 
 }
