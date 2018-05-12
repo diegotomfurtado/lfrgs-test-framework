@@ -5,15 +5,20 @@ import com.liferay.gs.test.functional.selenium.support.WebDriverManager;
 import junit.framework.TestCase;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.BrowserType;
 
 /**
  * @author Andrew Betts
  */
-public class SeleniumJavaTestCase extends TestCase {
+public abstract class SeleniumJavaTestCase extends TestCase {
+
+	protected String getBrowser() {
+		return BrowserType.HTMLUNIT;
+	}
 
 	@Override
 	protected void setUp() throws Exception {
-		webDriver = _WEB_DRIVER_MANAGER.getWebDriver();
+		webDriver = _WEB_DRIVER_MANAGER.getWebDriver(getBrowser());
 	}
 
 	@Override
