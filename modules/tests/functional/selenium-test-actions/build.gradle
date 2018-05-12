@@ -1,4 +1,22 @@
 dependencies {
 	compileOnly project(":modules:tests:functional:selenium-test-api")
+
 	testCompile project(":modules:tests:functional:selenium-test-api")
 }
+
+task copyWebDrivers (type: Copy) {
+	Project seleniumAPI = project(":modules:tests:functional:selenium-test-api")
+
+	from seleniumAPI.file("src/main/resources/drivers")
+	into project.file("build/resources/main/drivers")
+	include '*'
+}
+
+test {
+	exclude("**/*selenium*")
+}
+
+task testFunctional(type: Test) {
+}
+
+processResources.dependsOn(copyWebDrivers)
