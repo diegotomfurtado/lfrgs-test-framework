@@ -79,6 +79,28 @@ public class SeleniumProperties {
 		return _PROPERTIES.getProperty(key);
 	}
 
+	public static Boolean getBoolean(String key) {
+		return Boolean.valueOf(_PROPERTIES.getProperty(key));
+	}
+
+	public static Integer getInteger(String key) {
+		try {
+			return Integer.parseInt(_PROPERTIES.getProperty(key));
+		}
+		catch (NumberFormatException nfe) {
+			return 0;
+		}
+	}
+
+	public static Long getLong(String key) {
+		try {
+			return Long.parseLong(_PROPERTIES.getProperty(key));
+		}
+		catch (NumberFormatException nfe) {
+			return 0L;
+		}
+	}
+
 	public static void set(String key, String value) {
 		_PROPERTIES.setProperty(key, value);
 	}

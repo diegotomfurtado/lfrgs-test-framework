@@ -48,6 +48,16 @@ public class SeleniumPropertyKeys {
 
 	public static final String SCREEN_SHOT_DIR_PATH = "screen.shot.dir.path";
 
+	public static final String TEST_ACTION_TIMEOUT = "test.action.timeout";
+
+	public static final String TEST_BASE_URL = "test.base.url";
+
+	public static final String TEST_DEFAULT_USER_LOGIN =
+		"test.default.user.login";
+
+	public static final String TEST_DEFAULT_USER_PASSWWORD =
+		"test.default.user.password";
+
 	public static final String WEBDRIVER_CHROME_DRIVER =
 		"webdriver.chrome.driver";
 
@@ -55,8 +65,5 @@ public class SeleniumPropertyKeys {
 		"webdriver.gecko.driver";
 
 	public static final String WEBDRIVER_IE_DRIVER = "webdriver.ie.driver";
-
-	public static final String WEBDRIVER_DEFAULT_TIMEOUT =
-		"webdriver.default.timeout";
 
 }
