@@ -1,0 +1,3 @@
+Bundle-Name: liferay-selenium-test-actions
+Bundle-SymbolicName: com.liferay.gs.test.functional.selenium
+Bundle-Version: 1.0.0
