@@ -1,5 +1,9 @@
 package com.liferay.gs.test.functional.selenium.actions;
 
+import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
+import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
+import com.liferay.gs.test.functional.selenium.xpath.XPathStringBuilder;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,70 +14,25 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * @author Andrew Betts
  */
-public class ProductNavigationMenuActions extends TimeoutAction {
-
-	public ProductNavigationMenuActions(long timeout) {
-		 super(timeout);
-	}
+public class ProductNavigationMenuActions {
 
 	/*
 	 * Add the portlet on Screen, but to do this, the user should inform the
 	 * portlet name and the column that the portlet will appear
 	 */
 	public void addPortletOnScreen(
-		String portletName, String column, WebDriver webDriver) {
+		String search, String portletId, String column, WebDriver webDriver) {
 
 		clickOnAddButton(webDriver);
 		clickOnApplicationCategory(webDriver);
-		searchForPortletByName(portletName, webDriver);
-		dragAndDropPortletToColumn(portletName, column, webDriver);
-	}
-
-	public void dragAndDropPortletToColumn(
-		String portletName, String column, WebDriver webDriver) {
-
-		WebDriverWait webDriverWait = new WebDriverWait(webDriver, timeout);
-
-		By searchApplicationResultLocator = By.xpath(
-			".//*[@id='_" +
-				LiferayPortletIds.ProductNavigationControlMenuPortlet +
-					"_portletCategory0']//*[contains (text(), '" +
-						portletName + "')]");
-
-		By columnLocator = By.xpath(".//*[@id='" + column + "']");
-
-		webDriverWait.until(
-			ExpectedConditions.visibilityOfElementLocated(
-				searchApplicationResultLocator));
-		webDriverWait.until(
-			ExpectedConditions.elementToBeClickable(
-				searchApplicationResultLocator));
-
-		WebElement element =
-			webDriver.findElement(searchApplicationResultLocator);
-
-		WebElement target = webDriver.findElement(columnLocator);
-
-		Actions actions = new Actions(webDriver)
-			.dragAndDrop(element, target);
-
-		actions.perform();
-	}
-
-	public void searchForPortletByName(String portletName, WebDriver webDriver) {
-		WebDriverWait webDriverWait = new WebDriverWait(webDriver, timeout);
-
-		webDriverWait.until(
-			ExpectedConditions.visibilityOfElementLocated(
-				searchApplicationLocator));
-
-		webDriverWait.until(
-			ExpectedConditions.elementToBeClickable(searchApplicationLocator));
-
-		webDriver.findElement(searchApplicationLocator).sendKeys(portletName);
+		searchForPortletByName(search, webDriver);
+		dragAndDropPortletToColumn(portletId, column, webDriver);
 	}
 
 	public void clickOnAddButton(WebDriver webDriver) {
+		long timeout = SeleniumProperties.getInteger(
+			SeleniumPropertyKeys.TEST_ACTION_TIMEOUT);
+
 		WebDriverWait webDriverWait = new WebDriverWait(webDriver, timeout);
 
 		webDriverWait.until(
@@ -86,6 +45,9 @@ public class ProductNavigationMenuActions extends TimeoutAction {
 	}
 
 	public void clickOnApplicationCategory(WebDriver webDriver) {
+		long timeout = SeleniumProperties.getInteger(
+			SeleniumPropertyKeys.TEST_ACTION_TIMEOUT);
+
 		WebDriverWait webDriverWait = new WebDriverWait(webDriver, timeout);
 
 		webDriverWait.until(
@@ -112,6 +74,55 @@ public class ProductNavigationMenuActions extends TimeoutAction {
 
 			webDriver.findElement(applicationHeadingLocator).click();
 		}
+	}
+
+	public void dragAndDropPortletToColumn(
+		String portletId, String column, WebDriver webDriver) {
+
+		long timeout = SeleniumProperties.getInteger(
+			SeleniumPropertyKeys.TEST_ACTION_TIMEOUT);
+
+		WebDriverWait webDriverWait = new WebDriverWait(webDriver, timeout);
+
+		String portletIdXPath = XPathStringBuilder.buildXPathContains(
+			"span", "@data-portlet-id", portletId);
+
+		By searchApplicationResultLocator = By.xpath(portletIdXPath);
+
+		By columnLocator = By.xpath(".//*[@id='" + column + "']");
+
+		webDriverWait.until(
+			ExpectedConditions.visibilityOfElementLocated(
+				searchApplicationResultLocator));
+		webDriverWait.until(
+			ExpectedConditions.elementToBeClickable(
+				searchApplicationResultLocator));
+
+		WebElement element =
+			webDriver.findElement(searchApplicationResultLocator);
+
+		WebElement target = webDriver.findElement(columnLocator);
+
+		Actions actions = new Actions(webDriver)
+			.dragAndDrop(element, target);
+
+		actions.perform();
+	}
+
+	public void searchForPortletByName(String search, WebDriver webDriver) {
+		long timeout = SeleniumProperties.getInteger(
+			SeleniumPropertyKeys.TEST_ACTION_TIMEOUT);
+
+		WebDriverWait webDriverWait = new WebDriverWait(webDriver, timeout);
+
+		webDriverWait.until(
+			ExpectedConditions.visibilityOfElementLocated(
+				searchApplicationLocator));
+
+		webDriverWait.until(
+			ExpectedConditions.elementToBeClickable(searchApplicationLocator));
+
+		webDriver.findElement(searchApplicationLocator).sendKeys(search);
 	}
 
 	private static final By addButtonLocator = By.xpath(

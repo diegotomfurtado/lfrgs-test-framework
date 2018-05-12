@@ -1,5 +1,8 @@
 package com.liferay.gs.test.functional.selenium.actions;
 
+import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
+import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,21 +15,14 @@ import java.util.List;
 /**
  * @author Andrew Betts
  */
-public class LiferayPortletActions extends TimeoutAction {
+public class LiferayPortletActions {
 
-	public LiferayPortletActions(String portletId, long timeout) {
-		super(timeout);
-
+	public LiferayPortletActions(String portletId) {
 		_portletId = portletId;
 
-		_baseWebDriverActions = new BaseWebDriverActions(timeout);
+		_baseWebDriverActions = new BaseWebDriverActions();
 	}
 
-	/*
-	 * Remove all portlets from the current screen, but to do this the
-	 * user should inform any part of the portlet ID, that all portlets with
-	 * this part of ID to be removed.
-	 */
 	public void remove(WebDriver webDriver) {
 		List<WebElement> portlets = webDriver.findElements(
 			By.xpath(".//*[contains(@id,'" + _portletId + "')]"));
@@ -40,10 +36,9 @@ public class LiferayPortletActions extends TimeoutAction {
 		}
 	}
 
-	public void setTimeout(long timeout) {
-		super.setTimeout(timeout);
-
-		_baseWebDriverActions.setTimeout(timeout);
+	public WebElement getPortlet(WebDriver webDriver) {
+		return _baseWebDriverActions.fetchWebElement(
+			By.id("portlet_" + _portletId), webDriver);
 	}
 
 	public void openPortletActionDropDown(
@@ -65,6 +60,9 @@ public class LiferayPortletActions extends TimeoutAction {
 		String title, WebDriver webDriver) {
 
 		By dropDownMenu = By.cssSelector(".dropdown-menu");
+
+		long timeout = SeleniumProperties.getInteger(
+			SeleniumPropertyKeys.TEST_ACTION_TIMEOUT);
 
 		WebDriverWait webDriverWait = new WebDriverWait(webDriver, timeout);
 

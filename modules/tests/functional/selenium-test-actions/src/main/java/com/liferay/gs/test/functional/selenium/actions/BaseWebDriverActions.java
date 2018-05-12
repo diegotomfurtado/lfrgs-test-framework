@@ -1,5 +1,7 @@
 package com.liferay.gs.test.functional.selenium.actions;
 
+import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
+import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
 import com.liferay.gs.test.functional.selenium.xpath.XPathStringBuilder;
 
 import org.openqa.selenium.Alert;
@@ -14,11 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * @author Andrew Betts
  */
-public class BaseWebDriverActions extends TimeoutAction {
-
-	public BaseWebDriverActions(long timeout) {
-		super(timeout);
-	}
+public class BaseWebDriverActions {
 
 	public void acceptBrowserDialog(WebDriver webDriver) {
 		Alert alert = webDriver.switchTo().alert();
@@ -63,8 +61,11 @@ public class BaseWebDriverActions extends TimeoutAction {
 
 	public WebElement fetchWebElement(By by, WebDriver webDriver) {
 		try {
-			WebDriverWait webDriverWait =
-				new WebDriverWait(webDriver, timeout);
+			long timeout = SeleniumProperties.getInteger(
+				SeleniumPropertyKeys.TEST_ACTION_TIMEOUT);
+
+			WebDriverWait webDriverWait = new WebDriverWait(
+				webDriver, timeout);
 
 			webDriverWait.until(ExpectedConditions.elementToBeClickable(by));
 
