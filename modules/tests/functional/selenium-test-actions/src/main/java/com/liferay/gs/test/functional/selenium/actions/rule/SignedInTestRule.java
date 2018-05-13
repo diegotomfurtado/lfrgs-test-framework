@@ -5,8 +5,11 @@ import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
 import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
 import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
 
+import java.util.function.Supplier;
+
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -15,7 +18,20 @@ import org.openqa.selenium.WebDriver;
 public class SignedInTestRule extends TestWatcher {
 
 	public SignedInTestRule() {
+		this(
+			() -> SeleniumProperties.get(
+				SeleniumPropertyKeys.TEST_DEFAULT_USER_LOGIN),
+			() -> SeleniumProperties.get(
+				SeleniumPropertyKeys.TEST_DEFAULT_USER_PASSWWORD));
+	}
+
+	public SignedInTestRule(
+		Supplier<String> loginSupplier, Supplier<String> passwordSupplier) {
+
 		_liferayUserActions = new LiferayUserActions();
+
+		_loginSupplier = loginSupplier;
+		_passwordSupplier = passwordSupplier;
 	}
 
 	/**
@@ -24,12 +40,8 @@ public class SignedInTestRule extends TestWatcher {
 	protected void starting(Description description) {
 		WebDriver webDriver = WebDriverThreadLocal.get();
 
-		String login = SeleniumProperties.get(
-			SeleniumPropertyKeys.TEST_DEFAULT_USER_LOGIN);
-		String password = SeleniumProperties.get(
-			SeleniumPropertyKeys.TEST_DEFAULT_USER_PASSWWORD);
-
-		_liferayUserActions.signIn(login, password, webDriver);
+		_liferayUserActions.signIn(
+			_loginSupplier.get(), _passwordSupplier.get(), webDriver);
 	}
 
 	/**
@@ -42,5 +54,7 @@ public class SignedInTestRule extends TestWatcher {
 	}
 
 	private LiferayUserActions _liferayUserActions;
+	private Supplier<String> _loginSupplier;
+	private Supplier<String> _passwordSupplier;
 
 }
