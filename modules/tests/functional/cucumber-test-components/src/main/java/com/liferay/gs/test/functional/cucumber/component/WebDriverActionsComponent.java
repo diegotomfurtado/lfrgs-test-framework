@@ -8,9 +8,9 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Andrew Betts
  */
-public class BaseWebDriverActionsComponent extends WebDriverComponent {
+public class WebDriverActionsComponent extends WebDriverComponent {
 
-	public BaseWebDriverActionsComponent() {
+	public WebDriverActionsComponent() {
 		_WebDriverActions = new WebDriverActions();
 	}
 
