@@ -54,11 +54,16 @@ public class SeleniumPropertyKeys {
 
 	public static final String TEST_DEFAULT_BROWSER = "test.default.browser";
 
-	public static final String TEST_DEFAULT_USER_LOGIN =
-		"test.default.user.login";
+	public static final String TEST_USER_LOGIN_PREFIX = "test.user.login.";
 
-	public static final String TEST_DEFAULT_USER_PASSWWORD =
-		"test.default.user.password";
+	public static final String TEST_USER_PASSWORD_PREFIX =
+		"test.user.password.";
+
+	public static final String TEST_USER_LOGIN_DEFAULT =
+		"test.user.login.default";
+
+	public static final String TEST_USER_PASSWORD_DEFAULT =
+		"test.user.password.default";
 
 	public static final String WEBDRIVER_CHROME_DRIVER =
 		"webdriver.chrome.driver";

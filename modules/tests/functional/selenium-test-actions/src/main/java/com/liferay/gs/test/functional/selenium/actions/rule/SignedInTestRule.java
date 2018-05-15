@@ -20,9 +20,9 @@ public class SignedInTestRule extends TestWatcher {
 	public SignedInTestRule() {
 		this(
 			() -> SeleniumProperties.get(
-				SeleniumPropertyKeys.TEST_DEFAULT_USER_LOGIN),
+				SeleniumPropertyKeys.TEST_USER_LOGIN_DEFAULT),
 			() -> SeleniumProperties.get(
-				SeleniumPropertyKeys.TEST_DEFAULT_USER_PASSWWORD));
+				SeleniumPropertyKeys.TEST_USER_PASSWORD_DEFAULT));
 	}
 
 	public SignedInTestRule(
