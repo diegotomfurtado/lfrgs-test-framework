@@ -31,7 +31,7 @@ public abstract class BaseStep {
 	}
 
 	protected abstract void registerComponents(
-		Consumer<? super WebDriverComponent> pageRegistrar);
+		Consumer<? super WebDriverComponent> componentRegistrar);
 
 
 	protected <T> T getComponent(Class<T> klass) {
