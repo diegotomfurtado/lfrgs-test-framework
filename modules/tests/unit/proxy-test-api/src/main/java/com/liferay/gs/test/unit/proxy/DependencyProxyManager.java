@@ -1,6 +1,7 @@
 package com.liferay.gs.test.unit.proxy;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,6 +78,27 @@ public class DependencyProxyManager {
 		}
 
 		return unProxiableFields;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <I> I getProxyInstance(Class<I> interfaceClass) {
+		return (I)Proxy.newProxyInstance(
+			interfaceClass.getClassLoader(),
+			new Class<?>[] { interfaceClass },
+			new MapBackedInvocationHandler(
+				interfaceClass.getName(), returnValues)
+		);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <I> I getProxyInstance(
+		Class<I> interfaceClass, InvocationHandler invocationHandler) {
+
+		return (I)Proxy.newProxyInstance(
+			interfaceClass.getClassLoader(),
+			new Class<?>[] { interfaceClass },
+			invocationHandler
+		);
 	}
 
 	@SuppressWarnings("unchecked")
