@@ -10,7 +10,7 @@
 
 <aui:button
 	name="addDummy"
-	data="<%= new HashMap<String, String>(){{put("qa-id", "add-dummy-button");}}%>"
+	data="<%= new HashMap<String, String>(){{put("qa-id", "add-dummy");}}%>"
     href="<%= addDummyRenderURL %>"
 />
 
@@ -71,8 +71,18 @@
 			cssClass="qa-css-edit-dummy"
 			name="edit"
 			href="<%= editDummyRenderURL %>"
-		>
+		/>
 
-		</liferay-ui:search-container-column-button>
+		<portlet:actionURL var="deleteDummyActionURL" name="/delete_dummy">
+			<portlet:param name="mvcRenderCommand" value="/view"/>
+			<portlet:param name="dummyId" value="<%= curDummy.getDummyId() %>"/>
+		</portlet:actionURL>
+
+		<liferay-ui:search-container-column-button
+			cssClass="qa-css-delete-dummy"
+			name="delete"
+			href="<%= deleteDummyActionURL %>"
+		/>
+
 	</liferay-ui:search-container-row>
 </liferay-ui:search-container>

@@ -1,6 +1,6 @@
-package com.liferay.gs.test.portlet;
+package com.liferay.gs.test.dummy.portlet;
 
-import com.liferay.gs.test.constants.DummyPortletKeys;
+import com.liferay.gs.test.dummy.constants.DummyPortletKeys;
 import com.liferay.gs.test.model.Dummy;
 import com.liferay.gs.test.service.DummyLocalService;
 

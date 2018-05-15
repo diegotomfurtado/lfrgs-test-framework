@@ -1,4 +1,4 @@
-package com.liferay.gs.test.constants;
+package com.liferay.gs.test.dummy.constants;
 
 /**
  * @author andrewbetts

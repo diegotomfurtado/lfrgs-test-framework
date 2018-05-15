@@ -1,17 +1,16 @@
-package com.liferay.gs.test.portlet;
+package com.liferay.gs.test.dummy.portlet;
 
-import com.liferay.gs.test.constants.DummyPortletKeys;
+import com.liferay.gs.test.dummy.constants.DummyPortletKeys;
 import com.liferay.gs.test.model.Dummy;
 import com.liferay.gs.test.service.DummyLocalService;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.dao.search.SearchContainer;
+
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.util.ParamUtil;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import com.liferay.portal.kernel.util.WebKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -22,27 +21,24 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"javax.portlet.name=" + DummyPortletKeys.Dummy,
-		"mvc.command.name=/", "mvc.command.name=/view"
+		"mvc.command.name=/edit_dummy"
 	},
 	service = MVCRenderCommand.class
 )
-public class ViewDummyMVCRenderCommand implements MVCRenderCommand {
+public class EditDummyMVCRenderCommand implements MVCRenderCommand {
 
 	@Override
 	public String render(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
-		SearchContainer<Dummy> searchContainer = new SearchContainer<>(
-			renderRequest, renderResponse.createRenderURL(), null, "empty");
+		long dummyId = ParamUtil.getLong(renderRequest, "dummyId");
 
-		searchContainer.setResults(
-			_dummyLocalService.getDummies(
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS));
+		Dummy dummy = _dummyLocalService.fetchDummy(dummyId);
 
-		renderRequest.setAttribute(WebKeys.SEARCH_CONTAINER, searchContainer);
+		renderRequest.setAttribute("dummy", dummy);
 
-		return "/view.jsp";
+		return "/edit.jsp";
 	}
 
 	@Reference

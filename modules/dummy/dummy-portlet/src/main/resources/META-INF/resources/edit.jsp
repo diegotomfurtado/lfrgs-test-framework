@@ -55,4 +55,6 @@
 			<aui:input name="five" value="<%= five %>" />
 		</aui:fieldset>
 	</aui:fieldset-group>
+
+	<aui:button data="<%= new HashMap<String, String>(){{ put("qa-id", "save-dummy"); }}%>" name="save" type="submit"/>
 </aui:form>
