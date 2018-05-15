@@ -1,17 +1,17 @@
 package com.liferay.gs.test.functional.cucumber;
 
+import com.liferay.gs.test.functional.selenium.runner.BrowserRunnerBuilder;
+import com.liferay.gs.test.functional.selenium.support.WebDriverManager;
+
 import java.util.Collections;
 import java.util.List;
 
-import com.liferay.gs.test.functional.selenium.runner.BrowserRunnerBuilder;
-import com.liferay.gs.test.functional.selenium.support.WebDriverManager;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerBuilder;
-
 
 /**
  * @author andrewbetts
