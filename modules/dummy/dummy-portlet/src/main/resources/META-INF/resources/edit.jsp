@@ -30,7 +30,7 @@
 	<portlet:param name="mvcRenderCommandName" value="/view" />
 </portlet:renderURL>
 
-<aui:a data="<%= new HashMap<String, String>(){{ put("qa-id", "back-to-view"); }}%>" label="back" href="<%= viewDummyRenderURL %>" />
+<aui:button data="<%= new HashMap<String, String>(){{ put("qa-id", "back-to-view"); }}%>" name="back" value="back" href="<%= viewDummyRenderURL %>" />
 
 <aui:form action="<%= editDummyActionURL %>" name="fm">
 	<aui:input name="dummyId" type="hidden" value="<%= dummyId %>" />

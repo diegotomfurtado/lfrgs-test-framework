@@ -10,6 +10,7 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 <%@ page import="com.liferay.gs.test.model.Dummy" %>
 
 <%@ page import="com.liferay.portal.kernel.util.WebKeys" %>
+<%@ page import="com.liferay.portal.kernel.dao.search.SearchContainer" %>
 
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.HashMap" %>
