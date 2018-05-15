@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Cucumber Test Components
+Bundle-SymbolicName: cucumber-test-components
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.functional.test.cucumber.components

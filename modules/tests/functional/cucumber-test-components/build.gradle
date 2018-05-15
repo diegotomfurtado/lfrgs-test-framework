@@ -1,0 +1,9 @@
+dependencies {
+	compileOnly project(":modules:tests:functional:cucumber-test-api")
+	compileOnly project(":modules:tests:functional:selenium-test-actions")
+	compileOnly project(":modules:tests:functional:selenium-test-api")
+
+	testCompile project(":modules:tests:functional:cucumber-test-api")
+	testCompile project(":modules:tests:functional:selenium-test-actions")
+	testCompile project(":modules:tests:functional:selenium-test-api")
+}
