@@ -25,31 +25,31 @@ public class LiferayUserActionsTest {
 	@Test
 	public void testSignInSignOut() {
 		LiferayUserActions liferayUserActions = new LiferayUserActions();
-		BaseWebDriverActions baseWebDriverActions = new BaseWebDriverActions();
+		WebDriverActions webDriverActions = new WebDriverActions();
 
 		By userIcon = By.cssSelector(
 			".user-icon-color-6.user-icon.user-icon-default");
 
-		WebElement userIconElement = baseWebDriverActions.fetchWebElement(
+		WebElement userIconElement = webDriverActions.fetchWebElement(
 			userIcon, _webDriver);
 
 		Assert.assertNull(userIconElement);
 
 		String login = SeleniumProperties.get(
-			SeleniumPropertyKeys.TEST_DEFAULT_USER_LOGIN);
+			SeleniumPropertyKeys.TEST_USER_LOGIN_DEFAULT);
 		String password = SeleniumProperties.get(
-			SeleniumPropertyKeys.TEST_DEFAULT_USER_PASSWWORD);
+			SeleniumPropertyKeys.TEST_USER_PASSWORD_DEFAULT);
 
 		liferayUserActions.signIn(login, password, _webDriver);
 
-		userIconElement = baseWebDriverActions.fetchWebElement(
+		userIconElement = webDriverActions.fetchWebElement(
 			userIcon, _webDriver);
 
 		Assert.assertNotNull(userIconElement);
 
 		liferayUserActions.signOut(_webDriver);
 
-		userIconElement = baseWebDriverActions.fetchWebElement(
+		userIconElement = webDriverActions.fetchWebElement(
 			userIcon, _webDriver);
 
 		Assert.assertNull(userIconElement);

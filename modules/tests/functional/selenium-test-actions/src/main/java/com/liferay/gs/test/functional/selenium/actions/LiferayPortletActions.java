@@ -20,7 +20,7 @@ public class LiferayPortletActions {
 	public LiferayPortletActions(String portletId) {
 		_portletId = portletId;
 
-		_baseWebDriverActions = new BaseWebDriverActions();
+		_WebDriverActions = new WebDriverActions();
 	}
 
 	public void remove(WebDriver webDriver) {
@@ -32,12 +32,12 @@ public class LiferayPortletActions {
 
 			clickOnPortletConfigurationMenu("Remove", webDriver);
 
-			_baseWebDriverActions.acceptBrowserDialog(webDriver);
+			_WebDriverActions.acceptBrowserDialog(webDriver);
 		}
 	}
 
 	public WebElement getPortlet(WebDriver webDriver) {
-		return _baseWebDriverActions.fetchWebElement(
+		return _WebDriverActions.fetchWebElement(
 			By.id("portlet_" + _portletId), webDriver);
 	}
 
@@ -81,7 +81,7 @@ public class LiferayPortletActions {
 		configurationMenu.click();
 	}
 
-	private BaseWebDriverActions _baseWebDriverActions;
+	private WebDriverActions _WebDriverActions;
 
 	private String _portletId;
 

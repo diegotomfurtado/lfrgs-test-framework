@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * @author Andrew Betts
  */
-public class BaseWebDriverActions {
+public class WebDriverActions {
 
 	public void acceptBrowserDialog(WebDriver webDriver) {
 		Alert alert = webDriver.switchTo().alert();
@@ -34,6 +34,11 @@ public class BaseWebDriverActions {
 		String tagName, String qaId, boolean exact, WebDriver webDriver) {
 
 		return fetchByXPath(tagName, "@data-qa-id", qaId, exact, webDriver);
+	}
+
+	public WebElement fetchByQACssClass(String cssClass, WebDriver webDriver) {
+		return fetchWebElement(
+			By.cssSelector(".qa-css-" + cssClass), webDriver);
 	}
 
 	public WebElement fetchByXPath(

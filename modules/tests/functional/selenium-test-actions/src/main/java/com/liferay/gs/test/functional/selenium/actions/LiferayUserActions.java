@@ -13,7 +13,7 @@ import org.openqa.selenium.WebElement;
 public class LiferayUserActions {
 
 	public LiferayUserActions() {
-		_baseWebDriverActions = new BaseWebDriverActions();
+		_WebDriverActions = new WebDriverActions();
 	}
 
 	public void signIn(String login, String password, WebDriver webDriver) {
@@ -34,7 +34,7 @@ public class LiferayUserActions {
 		passwordElement.clear();
 		passwordElement.sendKeys(password);
 
-		WebElement signInButton = _baseWebDriverActions.fetchButtonByName(
+		WebElement signInButton = _WebDriverActions.fetchButtonByName(
 			"Sign In", false, webDriver);
 
 		signInButton.click();
@@ -47,6 +47,6 @@ public class LiferayUserActions {
 		webDriver.navigate().to(baseURL + "/c/portal/logout");
 	}
 
-	private BaseWebDriverActions _baseWebDriverActions;
+	private WebDriverActions _WebDriverActions;
 
 }
