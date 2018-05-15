@@ -6,14 +6,16 @@ import com.liferay.gs.test.service.DummyLocalService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import com.liferay.portal.kernel.util.WebKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.List;
 
 /**
  * @author Andrew Betts
@@ -35,10 +37,11 @@ public class ViewDummyMVCRenderCommand implements MVCRenderCommand {
 
 		SearchContainer<Dummy> searchContainer = new SearchContainer<>(
 			renderRequest, renderResponse.createRenderURL(), null, "empty");
+		List<Dummy> dummies = _dummyLocalService.getDummies(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-		searchContainer.setResults(
-			_dummyLocalService.getDummies(
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS));
+		searchContainer.setResults(dummies);
+		searchContainer.setTotal(dummies.size());
 
 		renderRequest.setAttribute(WebKeys.SEARCH_CONTAINER, searchContainer);
 
