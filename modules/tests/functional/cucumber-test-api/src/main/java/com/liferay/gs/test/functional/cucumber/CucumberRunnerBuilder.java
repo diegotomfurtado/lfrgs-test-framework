@@ -42,6 +42,11 @@ public class CucumberRunnerBuilder extends RunnerBuilder {
 		if (hookExtensionDefinitions != null) {
 			processHookExtensionDefinitions(hookExtensionDefinitions.value());
 		}
+		else {
+			processHookExtensionDefinitions(
+				testClass.getAnnotationsByType(
+					CucumberHookExtensionDefinition.class));
+		}
 
 		return new CucumberExt(testClass);
 	}
