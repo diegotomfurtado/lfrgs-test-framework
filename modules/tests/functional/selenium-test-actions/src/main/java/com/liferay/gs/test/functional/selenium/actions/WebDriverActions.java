@@ -72,7 +72,8 @@ public class WebDriverActions {
 			WebDriverWait webDriverWait = new WebDriverWait(
 				webDriver, timeout);
 
-			webDriverWait.until(ExpectedConditions.elementToBeClickable(by));
+			webDriverWait.until(
+				ExpectedConditions.presenceOfElementLocated(by));
 
 			return webDriver.findElement(by);
 		}
