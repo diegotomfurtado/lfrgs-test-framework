@@ -2,6 +2,7 @@ package com.liferay.gs.test.functional.selenium.actions;
 
 import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
 import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
+import com.liferay.gs.test.functional.selenium.xpath.XPathStringBuilder;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,25 +21,28 @@ public class LiferayPortletActions {
 	public LiferayPortletActions(String portletId) {
 		_portletId = portletId;
 
-		_WebDriverActions = new WebDriverActions();
+		_webDriverActions = new WebDriverActions();
 	}
 
 	public void remove(WebDriver webDriver) {
-		List<WebElement> portlets = webDriver.findElements(
-			By.xpath(".//*[contains(@id,'" + _portletId + "')]"));
+		WebElement portlet = getPortlet(webDriver);
 
-		for (WebElement portlet : portlets) {
+		while (portlet != null) {
 			openPortletActionDropDown(portlet, webDriver);
 
 			clickOnPortletConfigurationMenu("Remove", webDriver);
 
-			_WebDriverActions.acceptBrowserDialog(webDriver);
+			_webDriverActions.acceptBrowserDialog(webDriver);
+
+			portlet = getPortlet(webDriver);
 		}
 	}
 
 	public WebElement getPortlet(WebDriver webDriver) {
-		return _WebDriverActions.fetchWebElement(
-			By.id("portlet_" + _portletId), webDriver);
+		String xpath = XPathStringBuilder.buildXPathContains(
+			"section", "@id", "portlet_" + _portletId);
+
+		return _webDriverActions.fetchWebElement(By.xpath(xpath), webDriver);
 	}
 
 	public void openPortletActionDropDown(
@@ -81,7 +85,7 @@ public class LiferayPortletActions {
 		configurationMenu.click();
 	}
 
-	private WebDriverActions _WebDriverActions;
+	private WebDriverActions _webDriverActions;
 
 	private String _portletId;
 
