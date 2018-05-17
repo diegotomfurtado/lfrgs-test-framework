@@ -2,8 +2,11 @@ package com.liferay.gs.test.functional.selenium.actions.rule;
 
 import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
 
+import java.util.function.Supplier;
+
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -11,8 +14,8 @@ import org.openqa.selenium.WebDriver;
  */
 public class NavigationTestRule extends TestWatcher {
 
-	public NavigationTestRule(String toUrl) {
-		_toURL = toUrl;
+	public NavigationTestRule(Supplier<String> urlSupplier) {
+		_urlSupplier = urlSupplier;
 	}
 
 	/**
@@ -23,7 +26,7 @@ public class NavigationTestRule extends TestWatcher {
 
 		_backURL = webDriver.getCurrentUrl();
 
-		webDriver.navigate().to(_toURL);
+		webDriver.navigate().to(_urlSupplier.get());
 	}
 
 	/**
@@ -38,6 +41,6 @@ public class NavigationTestRule extends TestWatcher {
 	}
 
 	private String _backURL;
-	private String _toURL;
+	private Supplier<String> _urlSupplier;
 
 }

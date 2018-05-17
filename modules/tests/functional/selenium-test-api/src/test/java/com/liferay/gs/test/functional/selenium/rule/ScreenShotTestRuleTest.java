@@ -5,10 +5,10 @@ import com.liferay.gs.test.functional.selenium.BaseTest;
 import com.liferay.gs.test.functional.selenium.constants.BrowserDrivers;
 import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
 import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
+import com.liferay.gs.test.functional.selenium.support.WebDriverManager;
 
 import java.io.File;
 
-import com.liferay.gs.test.functional.selenium.support.WebDriverManager;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,8 +17,8 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
 import org.junit.runners.model.Statement;
+
 import org.openqa.selenium.WebDriver;
 
 /**

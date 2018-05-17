@@ -3,7 +3,6 @@ package com.liferay.gs.test.functional.selenium.rule;
 import com.liferay.gs.test.functional.selenium.BaseTest;
 
 import org.junit.Assert;
-import org.junit.AssumptionViolatedException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Stopwatch;
