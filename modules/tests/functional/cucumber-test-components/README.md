@@ -8,7 +8,7 @@ specific cucumber tests.
 ## Components
 
 Currently, the components are wrappers around action classes found in
-selenium-test-actions, exposing their api in **WebDriverComponent** classes.
+[selenium-test-actions](/modules/tests/functional/selenium-test-actions/README.md), exposing their api in **WebDriverComponent** classes.
 
 - **LiferayPortletActionsComponent** wraps LiferayPortletActions
 - **LiferayUserActionsComponent** wraps LiferayUserActions

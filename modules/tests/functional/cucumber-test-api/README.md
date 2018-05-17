@@ -4,7 +4,7 @@
 
 This module provides base classes to extend while using Cucumber to create
 functional tests. It is intended to wrap and extend the capabilities provided by
- selenium-test-api (e.g. setting the web driver and loading test properties).
+ [selenium-test-api](/modules/tests/functional/selenium-test-api/README.md) (e.g. setting the web driver and loading test properties).
 
 ## Cucumber
 
