@@ -3,9 +3,12 @@ package com.liferay.gs.test.functional.cucumber;
 import com.liferay.gs.test.functional.selenium.properties.SeleniumProperties;
 import com.liferay.gs.test.functional.selenium.properties.SeleniumPropertyKeys;
 import com.liferay.gs.test.functional.selenium.support.WebDriverManager;
+import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverManagerThreadLocal;
+import com.liferay.gs.test.functional.selenium.threadlocal.WebDriverThreadLocal;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.openqa.selenium.WebDriver;
@@ -16,14 +19,23 @@ import org.openqa.selenium.remote.BrowserType;
  */
 public abstract class BaseStep {
 
-	void updateWebDriver(WebDriver webDriver) {
-		this._webDriver = webDriver;
+	public BaseStep() {
+		_componentRegistry = new HashMap<>();
+		_webDriverManager = new WebDriverManager();
+	}
 
-		componentRegistry.clear();
+	void updateWebDriver(WebDriver webDriver) {
+		if (Objects.equals(_webDriver, webDriver)) {
+			return;
+		}
+
+		_webDriver = webDriver;
+
+		_componentRegistry.clear();
 
 		registerComponents(
 			(page) -> {
-				componentRegistry.put(page.getClass().getName(), page);
+				_componentRegistry.put(page.getClass().getName(), page);
 
 				page.setWebDriver(webDriver);
 			}
@@ -40,7 +52,7 @@ public abstract class BaseStep {
 		}
 
 		WebDriverComponent baseComponent =
-			(WebDriverComponent) componentRegistry.get(klass.getName());
+			(WebDriverComponent) _componentRegistry.get(klass.getName());
 
 		if (klass.isAssignableFrom(baseComponent.getClass())) {
 			return klass.cast(baseComponent);
@@ -50,7 +62,13 @@ public abstract class BaseStep {
 	}
 
 	protected WebDriver getWebDriver() {
-		if (_webDriver == null) {
+		if (_webDriver != null) {
+			return _webDriver;
+		}
+
+		WebDriver webDriver = WebDriverThreadLocal.get();
+
+		if (webDriver == null) {
 			String defaultBrowser = SeleniumProperties.get(
 				SeleniumPropertyKeys.TEST_DEFAULT_BROWSER);
 
@@ -58,16 +76,23 @@ public abstract class BaseStep {
 				defaultBrowser = BrowserType.HTMLUNIT;
 			}
 
-			updateWebDriver(_webDriverManager.getWebDriver(defaultBrowser));
+			WebDriverManager webDriverManager =
+				WebDriverManagerThreadLocal.get();
+
+			if (webDriverManager == null) {
+				webDriverManager = _webDriverManager;
+			}
+
+			webDriver = webDriverManager.getWebDriver(defaultBrowser);
 		}
+
+		updateWebDriver(webDriver);
 
 		return _webDriver;
 	}
 
+	private Map<String, ? super WebDriverComponent> _componentRegistry;
 	private WebDriver _webDriver;
-	private WebDriverManager _webDriverManager = new WebDriverManager();
-
-	private Map<String, ? super WebDriverComponent> componentRegistry =
-		new HashMap<>();
+	private WebDriverManager _webDriverManager;
 
 }
