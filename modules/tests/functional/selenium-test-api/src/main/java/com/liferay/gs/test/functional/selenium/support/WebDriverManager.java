@@ -33,8 +33,10 @@ import org.openqa.selenium.remote.service.DriverService;
 public class WebDriverManager {
 
 	@Override
-	public void finalize() {
+	public void finalize() throws Throwable {
 		stopService();
+
+		super.finalize();
 	}
 
 	public WebDriver getWebDriver() {
