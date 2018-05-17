@@ -12,6 +12,7 @@ selenium-test-actions, exposing their api in **WebDriverComponent** classes.
 
 - **LiferayPortletActionsComponent** wraps LiferayPortletActions
 - **LiferayUserActionsComponent** wraps LiferayUserActions
+- **ProductNavigationMenuActionsComponent** wraps ProductNavigationMenuActions
 - **WebDriverActionsComponent** wraps WebDriverActions
 
 To use these components in a Step class (extending BaseStep), register them
