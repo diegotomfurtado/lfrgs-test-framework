@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface CucumberHookExtensionDefinition {
 
-	public Class<? extends BaseCucumberHookExtension> value();
+	public Class<? extends CucumberHookExtension> value();
 
 	public int order() default 0;
 
