@@ -2,8 +2,8 @@ Bundle-Name: Liferay Selenium Test API
 Bundle-SymbolicName: selenium-test-api
 Bundle-Version: 1.0.0
 Export-Package:\
-    com.liferay.functional.test.selenium,\
-    com.liferay.functional.test.selenium.*
+    com.liferay.gs.test.functional.selenium,\
+    com.liferay.gs.test.functional.selenium.*
 -exportcontents:\
     org.checkerframework.checker.nullness.compatqual,\
     com.gargoylesoftware.htmlunit*,\
