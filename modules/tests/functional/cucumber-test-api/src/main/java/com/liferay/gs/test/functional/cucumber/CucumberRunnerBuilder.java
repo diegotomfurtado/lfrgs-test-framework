@@ -118,11 +118,11 @@ public class CucumberRunnerBuilder extends RunnerBuilder {
 		}
 
 		for (CucumberHookExtensionDefinition hookDefinition : hookDefinitions) {
-			Class<? extends BaseCucumberHookExtension> hookDefinitionClass =
+			Class<? extends CucumberHookExtension> hookDefinitionClass =
 				hookDefinition.value();
 
 			try {
-				Constructor<? extends BaseCucumberHookExtension> constructor =
+				Constructor<? extends CucumberHookExtension> constructor =
 					hookDefinitionClass.getConstructor(
 						String[].class, int.class);
 
@@ -132,14 +132,30 @@ public class CucumberRunnerBuilder extends RunnerBuilder {
 				CucumberHookExtensionRegistry.register(hook);
 			}
 			catch (NoSuchMethodException nsme) {
+				String expectedConstructor =
+					BaseCucumberHookExtension.class.getName();
+
+				try {
+					Constructor<BaseCucumberHookExtension> constructor =
+						BaseCucumberHookExtension.class.getConstructor(
+							String[].class, int.class);
+
+					expectedConstructor = constructor.toString();
+				}
+				catch (NoSuchMethodException e) {
+					// what happened? no more info than the class name
+				}
+
 				throw new IllegalArgumentException(
 					"CucumberHookExtension must have a constructor matching " +
-						BaseCucumberHookExtension.class.getName());
+						expectedConstructor,
+					nsme);
 			}
 			catch (Exception e) {
 				throw new IllegalArgumentException(
 					"unable to instantiate hook class " +
-						hookDefinitionClass.getName());
+						hookDefinitionClass.getName(),
+					e);
 			}
 		}
 	}
