@@ -13,10 +13,46 @@ import java.util.Map;
  */
 public class DependencyProxyManager {
 
+	@SuppressWarnings("unchecked")
+	public <I> I getCallCollectingProxyInstance(Class<I> interfaceClass) {
+		if (!interfaceClass.isInterface()) {
+			throw new IllegalArgumentException(
+				"did you mean to make a test class instead? " +
+					"only able to create proxies on interfaces");
+		}
+
+		return (I)Proxy.newProxyInstance(
+			interfaceClass.getClassLoader(),
+			new Class[] {interfaceClass},
+			new MapBackedInvocationHandler(
+				interfaceClass.getName(), returnValues, callMap));
+	}
+
 	public List<MethodInvocation> getMethodInvocations(
 		Class<?> interfaceClass) {
 
 		return callMap.get(interfaceClass.getName());
+	}
+
+	@SuppressWarnings("unchecked")
+	public <I> I getProxyInstance(Class<I> interfaceClass) {
+		return (I)Proxy.newProxyInstance(
+			interfaceClass.getClassLoader(),
+			new Class<?>[] { interfaceClass },
+			new MapBackedInvocationHandler(
+				interfaceClass.getName(), returnValues)
+		);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <I> I getProxyInstance(
+		Class<I> interfaceClass, InvocationHandler invocationHandler) {
+
+		return (I)Proxy.newProxyInstance(
+			interfaceClass.getClassLoader(),
+			new Class<?>[] { interfaceClass },
+			invocationHandler
+		);
 	}
 
 	public void putReturnValue(MethodKey testMethodKey, Object object) {
@@ -78,51 +114,6 @@ public class DependencyProxyManager {
 		}
 
 		return unProxiableFields;
-	}
-
-	@SuppressWarnings("unchecked")
-	public <I> I getProxyInstance(Class<I> interfaceClass) {
-		return (I)Proxy.newProxyInstance(
-			interfaceClass.getClassLoader(),
-			new Class<?>[] { interfaceClass },
-			new MapBackedInvocationHandler(
-				interfaceClass.getName(), returnValues)
-		);
-	}
-
-	@SuppressWarnings("unchecked")
-	public <I> I getProxyInstance(
-		Class<I> interfaceClass, InvocationHandler invocationHandler) {
-
-		return (I)Proxy.newProxyInstance(
-			interfaceClass.getClassLoader(),
-			new Class<?>[] { interfaceClass },
-			invocationHandler
-		);
-	}
-
-	@SuppressWarnings("unchecked")
-	public <I> I getCallCollectingProxyInstance(Class<I> interfaceClass) {
-		if (!interfaceClass.isInterface()) {
-			throw new IllegalArgumentException(
-				"did you mean to make a test class instead? " +
-					"only able to create proxies on interfaces");
-		}
-
-		return (I)Proxy.newProxyInstance(
-			interfaceClass.getClassLoader(),
-			new Class[] {interfaceClass},
-			((proxy, method, args) -> {
-				List<MethodInvocation> calls = callMap.computeIfAbsent(
-					interfaceClass.getName(), key -> new ArrayList<>());
-
-				calls.add(new MethodInvocation(method.getName(), args));
-
-				return returnValues.get(
-					new MethodKey(
-						interfaceClass.getName(), method.getName(),
-						method.getParameterTypes()));
-			}));
 	}
 
 	private static final String RETURN_VALUES_FIELD_NAME = "returnValues";
