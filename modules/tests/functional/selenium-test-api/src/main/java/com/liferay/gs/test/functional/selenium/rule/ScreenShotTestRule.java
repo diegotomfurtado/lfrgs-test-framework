@@ -18,7 +18,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 import org.openqa.selenium.OutputType;
@@ -29,16 +28,14 @@ import org.openqa.selenium.WebDriver;
  * @author Manoel Cyreno
  * @author Andrew Betts
  */
-public class ScreenShotTestRule extends TestWatcher {
+public class ScreenShotTestRule extends AbstractTestWatcher {
 
 	public ScreenShotTestRule() {
-		_when[TestWatcherState.FAILED.ordinal()] = true;
+		super(TestWatcherState.FAILED);
 	}
 
 	public ScreenShotTestRule(TestWatcherState[] when) {
-		for (TestWatcherState state : when) {
-			_when[state.ordinal()] = true;
-		}
+		super(when);
 	}
 
 	public void takeScreenShot(WebDriver webDriver, String fileName) {
@@ -82,11 +79,7 @@ public class ScreenShotTestRule extends TestWatcher {
 	 * Invoked when a test fails
 	 */
 	@Override
-	protected void failed(Throwable e, Description description) {
-		if (!_when[TestWatcherState.FAILED.ordinal()]) {
-			return;
-		}
-
+	protected void doFailed(Throwable e, Description description) {
 		WebDriver webDriver = WebDriverThreadLocal.get();
 
 		String fileName =
@@ -100,11 +93,7 @@ public class ScreenShotTestRule extends TestWatcher {
 	 * Invoked when a test method finishes (whether passing or failing)
 	 */
 	@Override
-	protected void finished(Description description) {
-		if (!_when[TestWatcherState.FINISHED.ordinal()]) {
-			return;
-		}
-
+	protected void doFinished(Description description) {
 		WebDriver webDriver = WebDriverThreadLocal.get();
 
 		String fileName =
@@ -118,11 +107,7 @@ public class ScreenShotTestRule extends TestWatcher {
 	 * Invoked when a test is about to start
 	 */
 	@Override
-	protected void starting(Description description) {
-		if (!_when[TestWatcherState.STARTING.ordinal()]) {
-			return;
-		}
-
+	protected void doStarting(Description description) {
 		WebDriver webDriver = WebDriverThreadLocal.get();
 
 		String fileName =
@@ -136,11 +121,7 @@ public class ScreenShotTestRule extends TestWatcher {
 	 * Invoked when a test succeeds
 	 */
 	@Override
-	protected void succeeded(Description description) {
-		if (!_when[TestWatcherState.SUCCEEDED.ordinal()]) {
-			return;
-		}
-
+	protected void doSucceeded(Description description) {
 		WebDriver webDriver = WebDriverThreadLocal.get();
 
 		String fileName =
@@ -173,7 +154,5 @@ public class ScreenShotTestRule extends TestWatcher {
 	}
 
 	private static final Log _log = LogFactory.getLog(ScreenShotTestRule.class);
-
-	private boolean[] _when = new boolean[TestWatcherState.values().length];
 
 }
