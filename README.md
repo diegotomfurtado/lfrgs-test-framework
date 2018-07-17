@@ -1,5 +1,25 @@
 # LFRGS Test Framework
 
+## TO USE
+
+- clone repo
+- get the jar or the module
+	- jar
+		- run gradle build on test-api modules
+		- copy jars into your module; adding them as part of your bnd
+	- module
+		- copy module src into your liferay workspace project
+		- fix any dependencies in build.gradle files
+		- reference the test-api modules in your own module
+- for selenium
+	- implement your own JUnit test classes that specify either the **LiferaySeleniumTestRunner** or **LiferaySeleniumSuiteRunner**
+	- **WebDriverField** and **@Browsers** annotations are available
+- for cucumber
+	- write a feature file following the normal gherkin syntax [see here](/master/modules/dummy/dummy-portlet/src/test/resources/feature/DummyPortlet.feature) for an example
+	- implement a *FeatureRunner* using the provided Cucumber and Framework annotations [see here](/modules/dummy/dummy-portlet/src/test/java/com/liferay/gs/test/dummy/functional/cucumber/DummyPortletFeatureRunner.java) for an example
+	- write extensions of **WebDriverComponent** that define user interactions with the browser via the selenium webDriver
+	- write extensions of **BaseStep** that use the **WebDriverComponents** to accomplish a complete user action This is what your feature file will reference [see here](/modules/dummy/dummy-portlet/src/test/java/com/liferay/gs/test/dummy/functional/cucumber/step/ButtonSteps.java) for an example
+
 ## Overview
 
 This test framework is intended to provide testing api that can be used to create tests quickly and easily. The Goal is to allow developers simple extension points to be able to write functional, integration, and unit tests.
