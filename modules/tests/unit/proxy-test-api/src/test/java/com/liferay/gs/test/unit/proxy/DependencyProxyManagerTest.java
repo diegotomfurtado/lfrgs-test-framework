@@ -49,6 +49,28 @@ public class DependencyProxyManagerTest {
 			new Object[] {second}, methodInvocations.get(1).getArgs());
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testCallCollectingProxyIllegalArgument() {
+		DependencyProxyManager dependencyProxyManager =
+			new DependencyProxyManager();
+
+		dependencyProxyManager.getCallCollectingProxyInstance(Class3.class);
+	}
+
+	@Test
+	public void testGetProxyInstance() {
+		DependencyProxyManager dependencyProxyManager =
+			new DependencyProxyManager();
+
+		Interface1 proxyInstance = dependencyProxyManager.getProxyInstance(
+			Interface1.class);
+
+		dependencyProxyManager.putReturnValue(
+			Interface1.class.getName(), "test1", true);
+
+		Assert.assertTrue(proxyInstance.test1());
+	}
+
 	@Test
 	public void testSetProxies() throws Exception {
 		DependencyProxyManager dependencyProxyManager =

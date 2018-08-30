@@ -36,6 +36,12 @@ public class DependencyProxyManager {
 
 	@SuppressWarnings("unchecked")
 	public <I> I getProxyInstance(Class<I> interfaceClass) {
+		if (!interfaceClass.isInterface()) {
+			throw new IllegalArgumentException(
+				"did you mean to make a test class instead? " +
+					"only able to create proxies on interfaces");
+		}
+
 		return getProxyInstance(
 			interfaceClass,
 			new MapBackedInvocationHandler(
@@ -46,6 +52,12 @@ public class DependencyProxyManager {
 	@SuppressWarnings("unchecked")
 	public <I> I getProxyInstance(
 		Class<I> interfaceClass, InvocationHandler invocationHandler) {
+
+		if (!interfaceClass.isInterface()) {
+			throw new IllegalArgumentException(
+				"did you mean to make a test class instead? " +
+					"only able to create proxies on interfaces");
+		}
 
 		return (I)Proxy.newProxyInstance(
 			interfaceClass.getClassLoader(),
