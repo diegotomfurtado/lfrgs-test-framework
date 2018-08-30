@@ -46,10 +46,8 @@ public class EditDummyRenderCommandTest {
 		// set mock return values
 
 		_dependencyProxyManager.putReturnValue(
-			new MethodKey(
-				DummyLocalService.class.getName(), "fetchDummy",
-				new Class[] {long.class}),
-			_dummy);
+			DummyLocalService.class.getName(), "fetchDummy",
+			new Class[] {long.class}, _dummy);
 
 		// run test
 

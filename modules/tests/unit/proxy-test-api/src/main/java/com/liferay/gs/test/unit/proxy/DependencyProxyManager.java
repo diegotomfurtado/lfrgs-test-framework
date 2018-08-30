@@ -36,9 +36,8 @@ public class DependencyProxyManager {
 
 	@SuppressWarnings("unchecked")
 	public <I> I getProxyInstance(Class<I> interfaceClass) {
-		return (I)Proxy.newProxyInstance(
-			interfaceClass.getClassLoader(),
-			new Class<?>[] { interfaceClass },
+		return getProxyInstance(
+			interfaceClass,
 			new MapBackedInvocationHandler(
 				interfaceClass.getName(), returnValues)
 		);
@@ -55,8 +54,23 @@ public class DependencyProxyManager {
 		);
 	}
 
-	public void putReturnValue(MethodKey testMethodKey, Object object) {
-		returnValues.put(testMethodKey, object);
+	public void putReturnValue(MethodKey testMethodKey, Object returnValue) {
+		returnValues.put(testMethodKey, returnValue);
+	}
+
+	public void putReturnValue(
+		String className, String methodName, Object returnValue) {
+
+		putReturnValue(
+			new MethodKey(className, methodName, new Class[0]), returnValue);
+	}
+
+	public void putReturnValue(
+		String className, String methodName, Class[] parameterTypes,
+		Object returnValue) {
+
+		putReturnValue(
+			new MethodKey(className, methodName, parameterTypes), returnValue);
 	}
 
 	public void reset() {

@@ -24,10 +24,8 @@ public class DependencyProxyManagerTest {
 				Interface1.class);
 
 		dependencyProxyManager.putReturnValue(
-			new MethodKey(
-				Interface1.class.getName(), "test1WithArg",
-				new Class[] {Object.class}),
-			true);
+			Interface1.class.getName(), "test1WithArg",
+			new Class[] {Object.class}, true);
 
 		Object first = new Object();
 		Object second = new Object();
@@ -57,17 +55,11 @@ public class DependencyProxyManagerTest {
 			new DependencyProxyManager();
 
 		dependencyProxyManager.putReturnValue(
-			new MethodKey(
-				Interface1.class.getName(), "test1", new Class[0]),
-			true);
+			Interface1.class.getName(), "test1", true);
 		dependencyProxyManager.putReturnValue(
-			new MethodKey(
-				Interface2.class.getName(), "test2", new Class[0]),
-			true);
+			Interface2.class.getName(), "test2", true);
 		dependencyProxyManager.putReturnValue(
-			new MethodKey(
-				Class3.class.getName(), "test3", new Class[0]),
-			true);
+			Class3.class.getName(), "test3", true);
 
 		TestDependency testDependency = new TestDependency();
 
