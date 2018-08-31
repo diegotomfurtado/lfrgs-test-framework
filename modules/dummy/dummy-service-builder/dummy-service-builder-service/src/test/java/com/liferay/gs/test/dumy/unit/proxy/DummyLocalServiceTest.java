@@ -80,7 +80,6 @@ public class DummyLocalServiceTest {
 		Assert.assertEquals(dummy.getField5(), "five");
 	}
 
-	private static Dummy _dummy;
 	private static DummyLocalService _dummyLocalService;
 	private static DependencyProxyManager _dependencyProxyManager;
 
