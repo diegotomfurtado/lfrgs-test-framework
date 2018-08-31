@@ -5,7 +5,6 @@ import com.liferay.gs.test.model.Dummy;
 import com.liferay.gs.test.service.DummyLocalService;
 import com.liferay.gs.test.unit.proxy.DependencyProxyManager;
 import com.liferay.gs.test.unit.proxy.MethodInvocation;
-import com.liferay.gs.test.unit.proxy.MethodKey;
 
 import java.util.List;
 

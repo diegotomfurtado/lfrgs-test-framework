@@ -5,13 +5,14 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Andrew Betts
  */
-public class MapBackedInvocationHandler implements InvocationHandler {
+public class DependencyProxyInvocationHandler implements InvocationHandler {
 
-	public MapBackedInvocationHandler(
+	public DependencyProxyInvocationHandler(
 		String className, Map<MethodKey, Object> returnValues) {
 
 		_className = className;
@@ -19,7 +20,7 @@ public class MapBackedInvocationHandler implements InvocationHandler {
 		_returnValues = returnValues;
 	}
 
-	public MapBackedInvocationHandler(
+	public DependencyProxyInvocationHandler(
 		String className, Map<MethodKey, Object> returnValues,
 		Map<String, List<MethodInvocation>> callMap) {
 
@@ -42,7 +43,14 @@ public class MapBackedInvocationHandler implements InvocationHandler {
 		MethodKey methodKey = new MethodKey(
 			_className, method.getName(), method.getParameterTypes());
 
-		return _returnValues.get(methodKey);
+		Object returnValue = _returnValues.get(methodKey);
+
+		if (returnValue instanceof InvokableReturnValue) {
+			return ((InvokableReturnValue)returnValue).invoke(
+				proxy, method, args);
+		}
+
+		return returnValue;
 	}
 
 	private String _className;

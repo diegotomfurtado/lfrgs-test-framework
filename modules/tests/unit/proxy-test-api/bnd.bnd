@@ -2,3 +2,6 @@ Bundle-Name: Liferay Proxy Unit Test API
 Bundle-SymbolicName: proxy-test-api
 Bundle-Version: 1.0.0
 Export-Package: com.liferay.gs.test.unit.proxy
+-includeresource:\
+    @hamcrest-core-[0-9]*.jar,\
+    @junit-[0-9]*.jar

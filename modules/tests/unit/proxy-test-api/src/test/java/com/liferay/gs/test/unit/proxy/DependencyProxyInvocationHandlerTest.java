@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Andrew Betts
  */
 @RunWith(JUnit4.class)
-public class MapBackedInvocationHandlerTest {
+public class DependencyProxyInvocationHandlerTest {
 
 	@Test
 	public void testInvoke() {
@@ -26,8 +26,8 @@ public class MapBackedInvocationHandlerTest {
 				testObjectClassName, "test", new Class[0]),
 			true);
 
-		MapBackedInvocationHandler mapBackedInvocationHandler =
-			new MapBackedInvocationHandler(
+		DependencyProxyInvocationHandler dependencyProxyInvocationHandler =
+			new DependencyProxyInvocationHandler(
 				testObjectClassName, returnValues);
 
 		ClassLoader classLoader = getClass().getClassLoader();
@@ -35,7 +35,7 @@ public class MapBackedInvocationHandlerTest {
 		Testable proxiedTestObject =
 			(Testable)Proxy.newProxyInstance(
 				classLoader, new Class[] {Testable.class},
-				mapBackedInvocationHandler);
+				dependencyProxyInvocationHandler);
 
 		Assert.assertTrue(proxiedTestObject.test());
 	}

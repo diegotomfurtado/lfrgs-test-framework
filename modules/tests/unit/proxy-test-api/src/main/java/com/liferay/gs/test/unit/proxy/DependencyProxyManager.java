@@ -24,7 +24,7 @@ public class DependencyProxyManager {
 		return (I)Proxy.newProxyInstance(
 			interfaceClass.getClassLoader(),
 			new Class[] {interfaceClass},
-			new MapBackedInvocationHandler(
+			new DependencyProxyInvocationHandler(
 				interfaceClass.getName(), returnValues, callMap));
 	}
 
@@ -44,7 +44,7 @@ public class DependencyProxyManager {
 
 		return getProxyInstance(
 			interfaceClass,
-			new MapBackedInvocationHandler(
+			new DependencyProxyInvocationHandler(
 				interfaceClass.getName(), returnValues)
 		);
 	}
@@ -134,7 +134,7 @@ public class DependencyProxyManager {
 				Proxy.newProxyInstance(
 					classLoader,
 					new Class<?>[] { fieldType },
-					new MapBackedInvocationHandler(
+					new DependencyProxyInvocationHandler(
 						fieldType.getName(), returnValues)
 				));
 		}
