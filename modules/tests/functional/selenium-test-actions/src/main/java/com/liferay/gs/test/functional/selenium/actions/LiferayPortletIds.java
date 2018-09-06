@@ -145,6 +145,7 @@ public class LiferayPortletIds {
 	public static final String PageRatingsPortlet = "com_liferay_ratings_page_ratings_web_portlet_PageRatingsPortlet";
 	public static final String PasswordGeneratorPortlet = "com_liferay_password_generator_web_portlet_PasswordGeneratorPortlet";
 	public static final String PasswordPoliciesAdminPortlet = "com_liferay_password_policies_admin_web_portlet_PasswordPoliciesAdminPortlet";
+	public static final String PasswordReminder = "password-reminder";
 	public static final String PluginsAdminPortlet = "com_liferay_plugins_admin_web_portlet_PluginsAdminPortlet";
 	public static final String PollsDisplayPortlet = "com_liferay_polls_web_portlet_PollsDisplayPortlet";
 	public static final String PollsPortlet = "com_liferay_polls_web_portlet_PollsPortlet";
@@ -212,6 +213,7 @@ public class LiferayPortletIds {
 	public static final String SyncConnectorDevicesPortlet = "com_liferay_sync_connector_web_portlet_SyncDevicesPortlet";
 	public static final String SyncDevicesPortlet = "com_liferay_sync_web_portlet_SyncDevicesPortlet";
 	public static final String SystemSettingsPortlet = "com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet";
+	public static final String TermsOfUse = "terms-of-use";
 	public static final String TestPortlet = "com_liferay_test_portlet_TestPortlet";
 	public static final String TrainingAdminPortlet = "com_liferay_osb_training_admin_web_TrainingAdminPortlet";
 	public static final String TranslatorPortlet = "com_liferay_translator_web_portlet_TranslatorPortlet";
