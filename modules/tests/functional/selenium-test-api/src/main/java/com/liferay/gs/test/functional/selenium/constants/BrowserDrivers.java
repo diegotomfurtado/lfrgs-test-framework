@@ -21,6 +21,8 @@ public class BrowserDrivers {
 
 	public static final String FIREFOX_DRIVER_LINUX32 = "geckodriver_linux32";
 
+	public static final String FIREFOX_DRIVER_MAC = "geckodriver_mac";
+
 	public static final String FIREFOX_DRIVER_MAC32 = "geckodriver_mac32";
 
 	public static final String FIREFOX_DRIVER_WIN32 = "geckodriver_win32.exe";

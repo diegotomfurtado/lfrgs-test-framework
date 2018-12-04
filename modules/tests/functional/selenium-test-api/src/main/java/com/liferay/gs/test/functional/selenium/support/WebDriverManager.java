@@ -245,7 +245,7 @@ public class WebDriverManager {
 						driverPath + BrowserDrivers.CHROME_DRIVER_MAC64);
 					System.setProperty(
 						SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
-						driverPath + BrowserDrivers.FIREFOX_DRIVER_MAC32);
+						driverPath + BrowserDrivers.FIREFOX_DRIVER_MAC);
 
 					_availableWebDrivers.add(BrowserDrivers.BROWSER_CHROME);
 					_availableWebDrivers.add(BrowserType.FIREFOX);
@@ -253,7 +253,7 @@ public class WebDriverManager {
 				else {
 					System.setProperty(
 						SeleniumPropertyKeys.WEBDRIVER_GECKO_DRIVER,
-						driverPath + BrowserDrivers.FIREFOX_DRIVER_MAC32);
+						driverPath + BrowserDrivers.FIREFOX_DRIVER_MAC);
 
 					_availableWebDrivers.add(BrowserType.FIREFOX);
 				}
