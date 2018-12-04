@@ -6,6 +6,7 @@ import com.liferay.gs.test.functional.selenium.actions.LiferayPortletActions;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.liferay.gs.test.functional.selenium.actions.LiferayPortletMenuOption;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -40,18 +41,20 @@ public class LiferayPortletActionsComponent extends WebDriverComponent {
 			_portletIdToActionsMap.computeIfAbsent(
 				portletId, LiferayPortletActions::new);
 
-		liferayPortletActions.openPortletActionDropDown(
+		liferayPortletActions.openPortletOptionsMenu(
 			portletElement, webDriver);
 	}
 
-	public void clickOnPortletConfigurationMenu(
-		String title, String portletId) {
+	public void getPortletMenuOption(
+		WebElement portletElement,
+		LiferayPortletMenuOption liferayPortletMenuOption, String portletId) {
 
 		LiferayPortletActions liferayPortletActions = 
 			_portletIdToActionsMap.computeIfAbsent(
 				portletId, LiferayPortletActions::new);
 
-		liferayPortletActions.clickOnPortletConfigurationMenu(title, webDriver);
+		liferayPortletActions.getPortletMenuOption(
+			portletElement, liferayPortletMenuOption, webDriver);
 	}
 	
 	private Map<String, LiferayPortletActions> _portletIdToActionsMap; 

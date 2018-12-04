@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * @author Andrew Betts
@@ -28,9 +29,12 @@ public class LiferayPortletActions {
 		WebElement portlet = getPortlet(webDriver);
 
 		while (portlet != null) {
-			openPortletActionDropDown(portlet, webDriver);
+			openPortletOptionsMenu(portlet, webDriver);
 
-			clickOnPortletConfigurationMenu("Remove", webDriver);
+			WebElement removeOption = getPortletMenuOption(
+				portlet, LiferayPortletMenuOption.REMOVE, webDriver);
+
+			removeOption.click();
 
 			_webDriverActions.acceptBrowserDialog(webDriver);
 
@@ -45,23 +49,36 @@ public class LiferayPortletActions {
 		return _webDriverActions.fetchWebElement(By.xpath(xpath), webDriver);
 	}
 
-	public void openPortletActionDropDown(
+	public void openPortletOptionsMenu(
 		WebElement portletElement, WebDriver webDriver) {
 
-		WebElement configButton = portletElement.findElement(
-			By.cssSelector(".lexicon-icon-ellipsis-v"));
+		WebElement portletOptionsButton = portletElement.findElement(
+			By.xpath(_PORTLET_OPTIONS_XPATH_STRING));
 
 		Actions actions = new Actions(webDriver)
-			.moveToElement(configButton)
+			.moveToElement(portletOptionsButton)
 			.pause(Duration.ofMillis(200));
 
 		actions.perform();
 
-		configButton.click();
+		portletOptionsButton.click();
 	}
 
-	public void clickOnPortletConfigurationMenu(
-		String title, WebDriver webDriver) {
+	public WebElement getPortletMenuOption(
+		WebElement portletElement, LiferayPortletMenuOption portletMenuOption,
+		WebDriver webDriver) {
+
+		WebElement menuOptionElement = _webDriverActions.fetchWebElement(
+			By.xpath(
+				XPathStringBuilder.buildXPathContains(
+					"li", "@class", portletMenuOption.CSS_CLASS) +
+					XPathStringBuilder.buildXPathContains(
+						"a", "@id", _portletId)),
+			webDriver);
+
+		if (menuOptionElement != null) {
+			return menuOptionElement;
+		}
 
 		By dropDownMenu = By.cssSelector(".dropdown-menu");
 
@@ -70,20 +87,27 @@ public class LiferayPortletActions {
 
 		WebDriverWait webDriverWait = new WebDriverWait(webDriver, timeout);
 
-		WebElement configurationMenu =
-			webDriverWait.until((driver) -> {
+		Predicate<WebElement> titleMatcher =
+			(el -> el.getText().trim().equals(portletMenuOption.TITLE));
+
+		return webDriverWait.until(
+			(driver) -> {
 				WebElement dropDownMenuElement =
 					driver.findElement(dropDownMenu);
 
 				List<WebElement> elements = dropDownMenuElement.findElements(
-					By.cssSelector("li a.lfr-icon-item"));
+					By.cssSelector(
+						"li a." +
+							LiferayPortletMenuOption.MENU_OPTION_SPAN_CLASS));
 
-				return elements.stream().filter(
-					el -> el.getText().trim().equals(title)).findFirst().get();
-			});
-
-		configurationMenu.click();
+				return elements.stream().filter(titleMatcher).findFirst().get();
+			}
+		);
 	}
+
+	private static final String _PORTLET_OPTIONS_XPATH_STRING =
+		".//div[contains(@class,'portlet-options')]" +
+			"//a[contains(@title,'Options')]";
 
 	private WebDriverActions _webDriverActions;
 
