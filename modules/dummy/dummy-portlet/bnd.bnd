@@ -1,4 +1,0 @@
-Bundle-Name: Dummy Liferay MVC Portlet
-Bundle-SymbolicName: dummy-portlet
-Bundle-Version: 1.0.0
-Export-Package: com.liferay.gs.test.constants

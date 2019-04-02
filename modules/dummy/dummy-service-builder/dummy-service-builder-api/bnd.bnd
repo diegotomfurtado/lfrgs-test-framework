@@ -1,9 +1,0 @@
-Bundle-Name: Dummy Service Builder API
-Bundle-SymbolicName: dummy-service-builder-api
-Bundle-Version: 1.0.0
-Export-Package:\
-	com.liferay.gs.test.exception,\
-	com.liferay.gs.test.model,\
-	com.liferay.gs.test.service,\
-	com.liferay.gs.test.service.persistence
--includeresource: META-INF/service.xml=../dummy-service-builder-service/service.xml
